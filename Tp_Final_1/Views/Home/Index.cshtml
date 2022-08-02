@@ -83,8 +83,8 @@
 																<h4>@u.nombre @u.apellido</h4>
 															</div>
 															<span><form 
-																asp-controller="UsuarioAmigo"
-																asp-action="Edit"
+																asp-controller="UsuarioAmigoes"
+																asp-action="Create"
 																asp-route-idUser=@Accessor.HttpContext.Session.GetInt32("_id")
 																asp-route-idAmigo=@u.id>
 																<button class="bi bi-person-plus-fill"
@@ -98,14 +98,7 @@
 									</div><!--suggestions end-->
 									<div class="tags-sec full-width">
 										<ul>
-											<li><a href="#" title="">Help Center</a></li>
-											<li><a href="#" title="">About</a></li>
 											<li><a href="#" title="">Privacy Policy</a></li>
-											<li><a href="#" title="">Community Guidelines</a></li>
-											<li><a href="#" title="">Cookies Policy</a></li>
-											<li><a href="#" title="">Career</a></li>
-											<li><a href="#" title="">Language</a></li>
-											<li><a href="#" title="">Copyright Policy</a></li>
 										</ul>
 										<div class="cp-sec">
 											<img src="images/logo2.png" alt="">
@@ -257,9 +250,9 @@
 																	<h4>@u.nombre @u.apellido</h4>
 													
 																</div>
-																<span><form asp-controller="UsuarioAmigo"
+																<span><form asp-controller="UsuarioAmigoes"
 																	asp-action="DeleteConfirmed"
-																	asp-route-id=@u.id
+																	asp-route-idUser=@u.id
 																	asp-route-idAmigo=@ua.idAmigo>
 																	<button																
 																	type="submit"

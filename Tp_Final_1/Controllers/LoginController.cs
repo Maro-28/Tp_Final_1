@@ -9,9 +9,7 @@ namespace Tp_Final_1.Controllers
         public const string SessionIdKey = "_id";
         public const string SessionNyaKey = "_nombre";
         public const string SessionAdminKey = "_admin";
-        public const string SessionBlockKey = "_block";
-        public const string SessionEmailKey = "_email";
-        public const string SessionPasswordKey = "_password";
+
         public IActionResult Index()
         {
             return View();
@@ -24,8 +22,9 @@ namespace Tp_Final_1.Controllers
 
             HttpContext.Session.SetInt32(SessionIdKey, user.id);
             HttpContext.Session.SetString(SessionNyaKey, user.nombre + " " + user.apellido);
+            HttpContext.Session.SetString(SessionAdminKey, user.isAdm.ToString());
 
-            if(user.email == "")
+            if (user.email == "")
             {
                 TempData["Message"] = "Usuario no encontrado, favor de registrarse";
                 return View();

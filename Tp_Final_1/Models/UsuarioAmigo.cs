@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tp_Final_1.Models
 {
-    public class  UsuarioAmigo
+    public class UsuarioAmigo
     {
         public int idUser { get; set; }
         public Usuario user { get; set; }
@@ -26,5 +26,27 @@ namespace Tp_Final_1.Models
             idUser = ppal;
             idAmigo = segundo;
         }
-    }
+
+        public UsuarioAmigo agregarAmigoUsuario(UsuarioAmigo segundo)
+        {
+            int idU = segundo.idUser;
+            int idAmigo = segundo.idAmigo;
+
+            segundo.idAmigo = idU;
+            segundo.idUser = idAmigo;
+
+            return segundo;
+        }
+        public UsuarioAmigo EliminarAmigo(UsuarioAmigo segundo)
+        {
+            int idU = segundo.idUser;
+            int idAmigo = segundo.idAmigo;
+
+            segundo.idAmigo = idU;
+            segundo.idUser = idAmigo;
+
+            return segundo;
+        }
+        
+        }
 }

@@ -83,6 +83,7 @@ namespace Tp_Final_1.Controllers
             }
 
             var usuario = await _context.usuarios.FindAsync(id);
+            usuario.password = "";
             if (usuario == null)
             {
                 return NotFound();
@@ -95,35 +96,31 @@ namespace Tp_Final_1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,dni,nombre,apellido,email,password,intentosFallidos,bloqueado,isAdm")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("id,dni,nombre,apellido,email,password,intentosFallidos,bloqueado,isAdm")] Usuario usuario, string current, string newP)
         {
             
             if (id != usuario.id)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(usuario);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UsuarioExists(usuario.id))
+                   Usuario user = usuario.editarUsuario(usuario, current, newP);
+                    if(user.password == "@*@")
                     {
-                        return NotFound();
+                        TempData["Message"] = "La nueva password no coincide";
+                        return View() ; 
+                    }
+                    else if(user.password == "")
+                    {
+                        TempData["Message"] = "Password actual incorrecta";
+                        return View();
                     }
                     else
                     {
-                        throw;
+                        _context.Update(user);
+                        await _context.SaveChangesAsync();
+                        TempData["Message"] = "Usuario modificado correctamente";
                     }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(usuario);
+                return RedirectToAction(nameof(Index), "Home");
         }
 
         // GET: Usuarios/Delete/5
@@ -159,8 +156,20 @@ namespace Tp_Final_1.Controllers
                 _context.usuarios.Remove(usuario);
             }
 
+            
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (HttpContext.Session.GetString("_admin").ToString() == "True")
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                HttpContext.Session.Remove("_id");
+                HttpContext.Session.Remove("_nombre");
+                HttpContext.Session.Remove("_admin");
+                return RedirectToAction("Index", "Login");
+            }
+                
         }
 
         private bool UsuarioExists(int id)

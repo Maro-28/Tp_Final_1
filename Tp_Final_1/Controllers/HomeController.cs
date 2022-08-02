@@ -37,6 +37,13 @@ namespace Tp_Final_1.Controllers
             ViewData["Tags"] = tagsContext;
             return View();
         }
+        public IActionResult CerrarSesion()
+        {
+            HttpContext.Session.Remove("_id");
+            HttpContext.Session.Remove("_nombre");
+            HttpContext.Session.Remove("_admin");
+            return RedirectToAction("Index", "Login");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

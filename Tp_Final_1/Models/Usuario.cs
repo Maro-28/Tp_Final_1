@@ -16,7 +16,7 @@ namespace Tp_Final_1.Models
         public int intentosFallidos { get; set; }
         public bool bloqueado { get; set; }
         public bool isAdm { get; set; }
-        public virtual ICollection<UsuarioAmigo> misAmigos { get; set; } 
+        public virtual ICollection<UsuarioAmigo> misAmigos { get; set; }
         public virtual ICollection<UsuarioAmigo> amigosMios { get; set; }
         public List<Post> misPosts { get; } = new List<Post>();
         public List<Comentario> misComentarios { get; set; }
@@ -37,8 +37,8 @@ namespace Tp_Final_1.Models
             this.intentosFallidos = 0;
             this.isAdm = isAdm;
             this.bloqueado = false;
-            misPosts = new List<Post>();
-            misComentarios = new List<Comentario>();
+            //misPosts = new List<Post>();
+            //misComentarios = new List<Comentario>();
 
         }
 
@@ -109,6 +109,38 @@ namespace Tp_Final_1.Models
                 return usuario;
             }
         }
+    
+        public Usuario editarUsuario(Usuario usuario, string passwordAnterior, string passwordNueva)
+        {
+            MyContext _context = new MyContext();
+            Usuario[] userList = _context.usuarios.Where(x => x.password == passwordAnterior).ToArray();
+
+            if (userList.Length > 0 )
+            {
+                string passwordOriginal = _context.usuarios.Where(x => x.password == passwordAnterior).ToString();
+
+                _ = usuario.isAdm == true ? usuario.isAdm = true : usuario.isAdm = false;
+                _ = usuario.intentosFallidos == 0 ? usuario.intentosFallidos = 0 : usuario.intentosFallidos = 1;
+                _ = usuario.bloqueado == true ? usuario.bloqueado = true : usuario.bloqueado = false;
+                if(usuario.password == passwordNueva)
+                {
+                    return usuario;
+                }
+                else
+                {
+                    usuario.password = "@*@";
+                    return usuario;
+                }
+            }
+            else
+            {
+                usuario.password = "";
+                return usuario;
+            }
+        }
+    
+    
+    
     }
 
 }

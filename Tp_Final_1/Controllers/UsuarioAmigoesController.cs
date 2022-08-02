@@ -19,41 +19,6 @@ namespace Tp_Final_1.Controllers
             _context = context;
         }
 
-        // GET: UsuarioAmigoes
-        public async Task<IActionResult> Index()
-        {
-            var myContext = _context.UsuarioAmigo.Include(u => u.amigo).Include(u => u.user);
-            return View(await myContext.ToListAsync());
-        }
-
-        // GET: UsuarioAmigoes/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.UsuarioAmigo == null)
-            {
-                return NotFound();
-            }
-
-            var usuarioAmigo = await _context.UsuarioAmigo
-                .Include(u => u.amigo)
-                .Include(u => u.user)
-                .FirstOrDefaultAsync(m => m.idAmigo == id);
-            if (usuarioAmigo == null)
-            {
-                return NotFound();
-            }
-
-            return View(usuarioAmigo);
-        }
-
-        // GET: UsuarioAmigoes/Create
-        public IActionResult Create()
-        {
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id");
-            ViewData["idAmigo"] = new SelectList(_context.usuarios, "id", "id");
-            return View();
-        }
-
         // POST: UsuarioAmigoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -61,114 +26,30 @@ namespace Tp_Final_1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("idUser,idAmigo")] UsuarioAmigo usuarioAmigo)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(usuarioAmigo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id", usuarioAmigo.idUser);
-            ViewData["idAmigo"] = new SelectList(_context.usuarios, "id", "id", usuarioAmigo.idAmigo);
-            return View(usuarioAmigo);
-        }
+            _context.Add(usuarioAmigo);
+            await _context.SaveChangesAsync();
+            UsuarioAmigo ua = usuarioAmigo.agregarAmigoUsuario(usuarioAmigo);
+            _context.Add(ua);
+            await _context.SaveChangesAsync();
 
-        // GET: UsuarioAmigoes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.UsuarioAmigo == null)
-            {
-                return NotFound();
-            }
-
-            var usuarioAmigo = await _context.UsuarioAmigo.FindAsync(id);
-            if (usuarioAmigo == null)
-            {
-                return NotFound();
-            }
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id", usuarioAmigo.idUser);
-            ViewData["idAmigo"] = new SelectList(_context.usuarios, "id", "id", usuarioAmigo.idAmigo);
-            return View(usuarioAmigo);
-        }
-
-        // POST: UsuarioAmigoes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("idUser,idAmigo")] UsuarioAmigo usuarioAmigo)
-        {
-            if (id != usuarioAmigo.idAmigo)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(usuarioAmigo);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UsuarioAmigoExists(usuarioAmigo.idAmigo))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id", usuarioAmigo.idUser);
-            ViewData["idAmigo"] = new SelectList(_context.usuarios, "id", "id", usuarioAmigo.idAmigo);
-            return View(usuarioAmigo);
-        }
-
-        // GET: UsuarioAmigoes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.UsuarioAmigo == null)
-            {
-                return NotFound();
-            }
-
-            var usuarioAmigo = await _context.UsuarioAmigo
-                .Include(u => u.amigo)
-                .Include(u => u.user)
-                .FirstOrDefaultAsync(m => m.idAmigo == id);
-            if (usuarioAmigo == null)
-            {
-                return NotFound();
-            }
-
-            return View(usuarioAmigo);
+            TempData["Message"] = "Amigo agregado";
+            return RedirectToAction("Index", "Home");
         }
 
         // POST: UsuarioAmigoes/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed([Bind("idUser,idAmigo")] UsuarioAmigo usuarioAmigo)
         {
-            if (_context.UsuarioAmigo == null)
-            {
-                return Problem("Entity set 'MyContext.UsuarioAmigo'  is null.");
-            }
-            var usuarioAmigo = await _context.UsuarioAmigo.FindAsync(id);
-            if (usuarioAmigo != null)
-            {
-                _context.UsuarioAmigo.Remove(usuarioAmigo);
-            }
-
+            
+            _context.Remove(usuarioAmigo);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            UsuarioAmigo ua = usuarioAmigo.EliminarAmigo(usuarioAmigo);
+            _context.Remove(ua);
+            await _context.SaveChangesAsync();
 
-        private bool UsuarioAmigoExists(int id)
-        {
-            return (_context.UsuarioAmigo?.Any(e => e.idAmigo == id)).GetValueOrDefault();
+            TempData["Message"] = "Amigo eliminado";
+            return RedirectToAction("Index", "Home");
         }
     }
 }
