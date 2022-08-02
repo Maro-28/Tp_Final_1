@@ -17,6 +17,7 @@ namespace Tp_Final_1.Controllers
         {
             _context.post.Include(p => p.Tag).Load();
             _context.tags.Include(t => t.Post).Load();
+        
             var postContext = _context.post.Include(p => p.user);
             var comenContext = _context.comentarios;
             var usuariosContext = _context.usuarios;

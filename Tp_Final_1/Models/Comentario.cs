@@ -38,15 +38,12 @@ namespace Tp_Final_1.Models
 
 
         public Comentario agregarComentario (int idP, Comentario c)
-        {
-            MyContext _context = new MyContext();
-            int post = _context.post.Where(x => x.id == idP).Count();
-            if(post > 0)
-            {    
-               c.idPost= idP;
-            }
+        {   
+            c.idPost= idP;
             c.fecha = DateTime.Now;
             return c;
         }
+
+        
     }
 }

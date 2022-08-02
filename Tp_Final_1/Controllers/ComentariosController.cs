@@ -93,36 +93,17 @@ namespace Tp_Final_1.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,idPost,idUser,contenido,fecha")] Comentario comentario)
-        {
-            if (id != comentario.id)
+        {           
+            _context.Update(comentario);
+            await _context.SaveChangesAsync();
+            if (HttpContext.Session.GetString("_admin") == "true")
             {
-                return NotFound();
+                return RedirectToAction("IndexAdmin", "Home");
             }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(comentario);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ComentarioExists(comentario.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["idPost"] = new SelectList(_context.post, "id", "id", comentario.idPost);
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id", comentario.idUser);
-            return View(comentario);
+            return RedirectToAction("Index", "Home");     
         }
+
+
 
         // GET: Comentarios/Delete/5
         public async Task<IActionResult> Delete(int? id)
