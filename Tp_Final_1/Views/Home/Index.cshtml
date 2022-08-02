@@ -1,11 +1,14 @@
 ﻿@using Tp_Final_1.Controllers
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor Accessor
 
-@{ ViewData["Title"] = "Home"; 
-    IEnumerable<Post> post = ViewData["Posts"] as IEnumerable<Post>; 
-    IEnumerable<Usuario> usuarios = ViewData["Usuario"] as IEnumerable<Usuario>;
-    IEnumerable<UsuarioAmigo> usuarioAmigos = ViewData["Amigos"] as IEnumerable<UsuarioAmigo>;
+@{
+	ViewData["Title"] = "Home"; 
+	IEnumerable<Post> post = ViewData["Posts"] as IEnumerable<Post>; 
+	IEnumerable<Usuario> usuarios = ViewData["Usuario"] as IEnumerable<Usuario>;
+	IEnumerable<UsuarioAmigo> usuarioAmigos = ViewData["Amigos"] as IEnumerable<UsuarioAmigo>;
 	IEnumerable<Comentario> comentarios = ViewData["Comentario"] as IEnumerable<Comentario>;
+	IEnumerable<Tag> tags = ViewData["Tag"] as IEnumerable<Tag>;
+	IEnumerable<PostsTags> postTags = ViewData["PostsTags"] as IEnumerable<PostsTags>;
 
 	if(null != TempData["Message"])
    {
@@ -132,31 +135,32 @@
 														</div>
 													</div>
 												</div>
-												@if(p.idUser == @Accessor.HttpContext.Session.GetInt32("_id")){
-														<div class="job_descp">
-													<ul class="job-dt">
-														<li><a 
-															asp-controller="Posts"
-															asp-action="Edit"
-															asp-route-id=@p.id>Editar Post</a></li>
-														<li><a 
-															asp-controller="Posts"
-															asp-action="Delete"
-															asp-route-id=@p.id>Eliminar Post</a></li>
-													</ul>
 
+												<div class="job_descp">
+													@if(p.idUser == @Accessor.HttpContext.Session.GetInt32("_id"))
+													{
+														<ul class="job-dt">
+															<li><a 
+																asp-controller="Posts"
+																asp-action="Edit"
+																asp-route-id=@p.id>Editar Post</a></li>
+															<li><a 
+																asp-controller="Posts"
+																asp-action="Delete"
+																asp-route-id=@p.id>Eliminar Post</a></li>
+														</ul>
 
+													}
 													<p>@p.contenido</p>
 													<ul class="skill-tags">
-																										<!-- Listado de Tags-->
-														<li><a href="#" title="">HTML</a></li>
-														<li><a href="#" title="">PHP</a></li>
-														<li><a href="#" title="">CSS</a></li>
-														<li><a href="#" title="">Javascript</a></li>
-														<li><a href="#" title="">Wordpress</a></li> 	
+																				<!-- Listado de Tags-->				
+														@foreach (Tag t in p.Tag)
+														{
+														<li><a href="#" title="">@t.palabra</a></li>		
+														}
 													</ul>
 												</div>
-													}
+													
 													
 												<div class="job-status-bar">
 																										<!-- Listado de reacciones-->

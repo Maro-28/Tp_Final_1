@@ -58,7 +58,8 @@ namespace Tp_Final_1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,dni,nombre,apellido,email,password,intentosFallidos,bloqueado,isAdm")] Usuario usuario)
         {
-            Usuario user = usuario.crearUsuario(usuario);
+            int mailExiste = _context.usuarios.Where(x => x.email == usuario.email).Count();
+            Usuario user = usuario.crearUsuario(usuario,mailExiste);
 
             if (user.email == "")
             {
@@ -96,31 +97,27 @@ namespace Tp_Final_1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,dni,nombre,apellido,email,password,intentosFallidos,bloqueado,isAdm")] Usuario usuario, string current, string newP)
-        {
-            
-            if (id != usuario.id)
+        public async Task<IActionResult> Edit([Bind("id,dni,nombre,apellido,email,password,intentosFallidos,bloqueado,isAdm")] Usuario usuario, string current, string newP)
+        {            
+            Usuario[] userList = _context.usuarios.AsNoTracking().Where(x => x.password == current).ToArray();
+            Usuario user = usuario.editarUsuario(usuario, newP, userList);
+            if(user.password == "@*@")
             {
-                return NotFound();
+                TempData["Message"] = "La nueva password no coincide";
+                return View() ; 
             }
-                   Usuario user = usuario.editarUsuario(usuario, current, newP);
-                    if(user.password == "@*@")
-                    {
-                        TempData["Message"] = "La nueva password no coincide";
-                        return View() ; 
-                    }
-                    else if(user.password == "")
-                    {
-                        TempData["Message"] = "Password actual incorrecta";
-                        return View();
-                    }
-                    else
-                    {
-                        _context.Update(user);
-                        await _context.SaveChangesAsync();
-                        TempData["Message"] = "Usuario modificado correctamente";
-                    }
-                return RedirectToAction(nameof(Index), "Home");
+            else if(user.password == "")
+            {
+                TempData["Message"] = "Password actual incorrecta";
+                return View();
+            }
+            else
+            {                                
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Usuario modificado correctamente";
+            }
+            return RedirectToAction(nameof(Index), "Home");
         }
 
         // GET: Usuarios/Delete/5

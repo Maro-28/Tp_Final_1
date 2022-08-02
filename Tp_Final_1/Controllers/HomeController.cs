@@ -8,16 +8,22 @@ namespace Tp_Final_1.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly MyContext _context;
+        public HomeController(MyContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
-            MyContext _context = new MyContext();
+            _context.post.Include(p => p.Tag).Load();
+            _context.tags.Include(t => t.Post).Load();
             var postContext = _context.post.Include(p => p.user);
             var comenContext = _context.comentarios;
             var usuariosContext = _context.usuarios;
             var userId = HttpContext.Session.GetInt32("_id");
             var amigosContext = _context.UsuarioAmigo;
             HttpContext.Session.GetString("_nombre");
-            ViewData["Posts"] = postContext.ToList();
+            ViewData["Posts"] = _context.post.ToList();
             _ = usuariosContext != null ?
                 ViewData["Usuario"] = usuariosContext.ToList() :
                 ViewData["Usuario"] = Enumerable.Empty<string>();

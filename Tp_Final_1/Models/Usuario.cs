@@ -20,9 +20,7 @@ namespace Tp_Final_1.Models
         public virtual ICollection<UsuarioAmigo> amigosMios { get; set; }
         public List<Post> misPosts { get; } = new List<Post>();
         public List<Comentario> misComentarios { get; set; }
-        public List<Reaccion> misReacciones { get; set; }
-
-        private readonly MyContext _context;
+        public List<Reaccion> misReacciones { get; set; }        
         
 
         public Usuario() { }
@@ -37,68 +35,41 @@ namespace Tp_Final_1.Models
             this.intentosFallidos = 0;
             this.isAdm = isAdm;
             this.bloqueado = false;
-            //misPosts = new List<Post>();
-            //misComentarios = new List<Comentario>();
-
         }
 
-        public Usuario usuarioExistente(Usuario usuario)
+        public Usuario usuarioExistente(Usuario usuario, Usuario userPassCorrecto, Usuario[] userCorrecto)
         {
-            MyContext _context = new MyContext();
-            if (_context.usuarios != null)
+
+            if (userPassCorrecto != null)
             {
-                var user = _context.usuarios.Where(x => x.email == usuario.email && x.password == usuario.password).SingleOrDefault();
-
-                string[] userEmail = (from Usuario in _context.usuarios
-                                      where Usuario.email == usuario.email
-                                      select Usuario.email).ToArray();
-
-                if (user != null)
-                {
-                    IEnumerable<Usuario> userList = _context.usuarios.Where(x => x.email == usuario.email && x.password == usuario.password);
-
-                    userList.First().intentosFallidos = 0;
-                    _context.Update(userList.First());
-                    _context.SaveChanges();
-                    usuario = userList.First();
-                    return usuario;
-                }
-                else
-                {
-                    if (userEmail.Length > 0)
-                    {
-                        
-                        Usuario usuarioIncorrecto = _context.usuarios.Where(x => x.email == usuario.email).First();
-                        usuarioIncorrecto.intentosFallidos++;
-
-                        if (usuarioIncorrecto.intentosFallidos >= 3)
-                        {
-
-                            usuarioIncorrecto.bloqueado = true;
-
-                        }
-                        _context.Update(usuarioIncorrecto);
-                        _context.SaveChanges();
-                        return usuarioIncorrecto;
-                    }
-                    else
-                    {
-                        usuario.email = "";
-                        return usuario;
-                    }
-                }
+                userPassCorrecto.intentosFallidos = 0;  
+                                                        
+                return userPassCorrecto;
             }
             else
             {
-                usuario.email = "";
-                return usuario;
-            }
+                if (userCorrecto.Length > 0)
+                {
+                    userCorrecto.First().intentosFallidos++;
+
+                    if (userCorrecto.First().intentosFallidos >= 3)
+                    {
+                        userCorrecto.First().bloqueado = true;
+                    }
+                    return userCorrecto.First();
+                }
+                else
+                {
+                    usuario.email = "";
+                    return usuario;
+                }
+            }            
         }
     
-        public Usuario crearUsuario(Usuario usuario)
+        public Usuario crearUsuario(Usuario usuario,int mailExiste)
         {
             MyContext _context = new MyContext();
-            int mailExiste = _context.usuarios.Where(x => x.email == usuario.email).Count();
+            
             if (mailExiste > 0)
             {
                 usuario.email = "";
@@ -110,15 +81,10 @@ namespace Tp_Final_1.Models
             }
         }
     
-        public Usuario editarUsuario(Usuario usuario, string passwordAnterior, string passwordNueva)
+        public Usuario editarUsuario(Usuario usuario,string passwordNueva, Usuario[] userList)
         {
-            MyContext _context = new MyContext();
-            Usuario[] userList = _context.usuarios.Where(x => x.password == passwordAnterior).ToArray();
-
             if (userList.Length > 0 )
             {
-                string passwordOriginal = _context.usuarios.Where(x => x.password == passwordAnterior).ToString();
-
                 _ = usuario.isAdm == true ? usuario.isAdm = true : usuario.isAdm = false;
                 _ = usuario.intentosFallidos == 0 ? usuario.intentosFallidos = 0 : usuario.intentosFallidos = 1;
                 _ = usuario.bloqueado == true ? usuario.bloqueado = true : usuario.bloqueado = false;
@@ -138,9 +104,5 @@ namespace Tp_Final_1.Models
                 return usuario;
             }
         }
-    
-    
-    
     }
-
 }
