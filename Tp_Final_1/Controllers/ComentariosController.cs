@@ -126,22 +126,19 @@ namespace Tp_Final_1.Controllers
         }
 
         // POST: Comentarios/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.comentarios == null)
-            {
-                return Problem("Entity set 'MyContext.comentarios'  is null.");
-            }
             var comentario = await _context.comentarios.FindAsync(id);
-            if (comentario != null)
-            {
-                _context.comentarios.Remove(comentario);
-            }
-
+            _context.comentarios.Remove(comentario);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            if (HttpContext.Session.GetString("_admin") == "true")
+            {
+                return RedirectToAction("IndexAdmin", "Home");
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         private bool ComentarioExists(int id)
