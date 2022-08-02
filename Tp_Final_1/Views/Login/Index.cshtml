@@ -1,0 +1,99 @@
+﻿  @model Tp_Final_1.Models.Usuario
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+   if(null != TempData["Message"])
+   {
+      <script type="text/javascript">
+       alert('@TempData["Message"]');
+      </script>
+   }
+
+   if(null != TempData["MessageLoger"])
+   {
+      <script type="text/javascript">
+       alert('@TempData["MessageLoger"]');
+      </script>
+   }
+}
+
+@using (Html.BeginForm("Index", "Login", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<body class="sign-in">
+    <div class="wrapper">
+      <div class="sign-in-page">
+        <div class="signin-popup">
+          <div class="signin-pop">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="cmp-info">
+                  <div class="cm-logo">
+                    <img src="~/Logo.png" alt="" />
+                    <p>
+                        Red social Could es un red social para hacer nuevos amigos. Regístrate o iniciar sesión para comenzar una nueva aventura
+                    </p>
+                  </div>
+                  <!--cm-logo end-->
+                  <img src="images/cm-main-img.png" alt="" />
+                </div>
+                <!--cmp-info end-->
+              </div>
+              <div class="col-lg-6">
+                <div class="login-sec">
+                  <ul>
+                    <li>
+                     </li>
+                  </ul>
+                  <div class="sign_in_sec current" id="tab-1">
+                    <h3>Iniciar sesion</h3>
+                    <form asp-action="Index">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="email" class="control-label"></label>
+                    <input asp-for="email" class="form-control mt-3" />
+                    <span asp-validation-for="email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="password" class="control-label "></label>
+                    <input asp-for="password" class="form-control mt-3" />
+                    <span asp-validation-for="password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Ingresar" class="btn btn-primary mt-3" />
+                    <a
+                        type="button"
+                        class="btn btn-warning mt-3"
+                        asp-controller="Usuarios"
+                        asp-action="Create"
+                        >Registrate</a>
+                </div>
+            </form>
+                    <!--login-resources end-->
+                  </div>
+                  <!--sign_in_sec end-->
+                </div>
+                <!--login-sec end-->
+              </div>
+            </div>
+          </div>
+          <!--signin-pop end-->
+        </div>
+        <!--signin-popup end-->
+      </div>
+      <!--sign-in-page end-->
+    </div>
+    <!--theme-layout end-->
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/popper.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="lib/slick/slick.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+  </body>
+
+
+ }

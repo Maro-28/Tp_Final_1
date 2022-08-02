@@ -1,0 +1,365 @@
+﻿@using Tp_Final_1.Controllers
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor Accessor
+
+@{ ViewData["Title"] = "Home"; 
+    IEnumerable<Post> post = ViewData["Posts"] as IEnumerable<Post>; 
+    IEnumerable<Usuario> usuarios = ViewData["Usuario"] as IEnumerable<Usuario>;
+    IEnumerable<UsuarioAmigo> usuarioAmigos = ViewData["Amigos"] as IEnumerable<UsuarioAmigo>;
+	IEnumerable<Comentario> comentarios = ViewData["Comentario"] as IEnumerable<Comentario>;
+
+	if(null != TempData["Message"])
+   {
+	<script type="text/javascript">
+	   	alert('@TempData["Message"]');
+	</script>
+   }
+}
+<body>	
+	<div class="wrapper align-content-center">
+		<main>
+			<div class="main-section">
+				<div class="container">
+					<div class="main-section-data">
+						<div class="row">
+							<div class="col-lg-3 col-md-4 pd-left-none no-pd">
+								<div class="main-left-sidebar no-margin">
+									<div class="user-data full-width">
+										<div class="user-profile">
+											<div class="username-dt">
+												<div class="usr-pic">
+													<img src="~/logoprofile.png" alt="">
+												</div>
+											</div><!--username-dt end-->
+											<div class="user-specs">
+												<h3>@Accessor.HttpContext.Session.GetString("_nombre")</h3>
+												<span>Graphic Designer at Self Employed</span>
+											</div>
+										</div><!--user-profile end-->
+										<ul class="user-fw-status">
+											<li>
+												<a asp-controller="Usuarios"
+													asp-action="Details"
+													asp-route-id="@Accessor.HttpContext.Session.GetInt32("_id")">
+													Ver perfil</a>
+											</li>
+											<li>
+												<a asp-controller="Usuarios"
+													asp-action="Edit"
+													asp-route-id="@Accessor.HttpContext.Session.GetInt32("_id")">
+													Editar perfil</a>
+											</li>
+											<li>
+												<a asp-controller="Home"
+													asp-action="CerrarSesion">
+													Cerrar sesion</a>
+											</li>
+										</ul>
+									</div><!--user-data end-->
+									<div class="suggestions full-width">
+										<div class="sd-title">
+											<h3>Sugerencias de amigos</h3>
+										</div><!--sd-title end-->
+										
+										@foreach (Usuario u in usuarios) {
+											if(u.id != Accessor.HttpContext.Session.GetInt32("_id"))
+											{
+												List<int> listAmigos = new List<int>();
+
+												foreach(UsuarioAmigo ua in usuarioAmigos)
+												{
+													if(ua.idUser == Accessor.HttpContext.Session.GetInt32("_id"))
+													{
+														listAmigos.Add(ua.idAmigo);
+													}
+												}
+												if(!listAmigos.Contains(u.id))
+												{
+													<div class="suggestions-list">
+														<div class="suggestion-usd">
+															<div>
+																<img src="~/logoprofile.png" alt="">
+															</div>
+															<div class="sgt-text">
+																<h4>@u.nombre @u.apellido</h4>
+															</div>
+															<span><form 
+																asp-controller="UsuarioAmigo"
+																asp-action="Edit"
+																asp-route-idUser=@Accessor.HttpContext.Session.GetInt32("_id")
+																asp-route-idAmigo=@u.id>
+																<button class="bi bi-person-plus-fill"
+																type="submit"
+																></button></form></span>
+														</div>
+													</div><!--suggestions-list end-->
+												}
+											}			
+										}
+									</div><!--suggestions end-->
+									<div class="tags-sec full-width">
+										<ul>
+											<li><a href="#" title="">Help Center</a></li>
+											<li><a href="#" title="">About</a></li>
+											<li><a href="#" title="">Privacy Policy</a></li>
+											<li><a href="#" title="">Community Guidelines</a></li>
+											<li><a href="#" title="">Cookies Policy</a></li>
+											<li><a href="#" title="">Career</a></li>
+											<li><a href="#" title="">Language</a></li>
+											<li><a href="#" title="">Copyright Policy</a></li>
+										</ul>
+										<div class="cp-sec">
+											<img src="images/logo2.png" alt="">
+											<p><img src="images/cp.png" alt="">Copyright 2019</p>
+										</div>
+									</div><!--tags-sec end-->
+								</div><!--main-left-sidebar end-->
+							</div>
+
+							
+								<div class="col-lg-6 col-md-8 no-pd">
+								<div class="main-ws-sec">
+									<div class="post-topbar">
+										<div class="post-st">
+											<ul>
+												<li><a class="post_project" href="#" title="">Buscar</a></li>
+												<li><a class="post-jb active" href="#" title="">Publicar</a></li>
+											</ul>
+										</div><!--post-st end-->
+									</div><!--post-topbar end-->
+
+										<div class="posts-section">
+										<div class="posty">
+											@foreach (Post p in post)
+											{
+												<div class="post-bar no-margin">
+												<div class="post_topbar">
+													<div class="usy-dt">
+														<div class="usy-name">
+															<h3>@p.user.nombre @p.user.apellido</h3>
+														</div>
+													</div>
+												</div>
+												@if(p.idUser == @Accessor.HttpContext.Session.GetInt32("_id")){
+														<div class="job_descp">
+													<ul class="job-dt">
+														<li><a 
+															asp-controller="Posts"
+															asp-action="Edit"
+															asp-route-id=@p.id>Editar Post</a></li>
+														<li><a 
+															asp-controller="Posts"
+															asp-action="Delete"
+															asp-route-id=@p.id>Eliminar Post</a></li>
+													</ul>
+
+
+													<p>@p.contenido</p>
+													<ul class="skill-tags">
+																										<!-- Listado de Tags-->
+														<li><a href="#" title="">HTML</a></li>
+														<li><a href="#" title="">PHP</a></li>
+														<li><a href="#" title="">CSS</a></li>
+														<li><a href="#" title="">Javascript</a></li>
+														<li><a href="#" title="">Wordpress</a></li> 	
+													</ul>
+												</div>
+													}
+													
+												<div class="job-status-bar">
+																										<!-- Listado de reacciones-->
+													<ul class="like-com">
+														<li>
+															<a href="#"><i class="bi bi-person-heart"></i> Like</a>
+														</li>
+														<li>
+															<a href="#"><i class="bi bi-person-dash-fill"></i>Don't Like</a>
+														</li>
+													</ul>
+												</div>
+
+
+											</div><!--post-bar end asd-->
+											<div class="comment-section">
+												<div class="comment-sec">
+													<ul>
+														@if(p.comentarios != null) {
+															foreach(Comentario c in comentarios){
+																if (p.id == c.idPost)
+																{
+																	<li>
+																		<div class="comment-list">
+																			<div class="comment">
+																				<h3>@c.usuario.nombre @c.usuario.apellido</h3>
+																				<p>@c.contenido</p>
+																			</div>
+																		</div><!--comment-list end-->
+																		@{
+																			if(c.idUser == @Accessor.HttpContext.Session.GetInt32("_id")){
+																				<a 
+																					class="btn btn-success btn-sm"
+																					asp-controller="Comentarios"
+																					asp-action="Edit"
+																					asp-route-id="@c.id">
+																					Editar</a>
+
+																			<a 
+																				class="btn btn-danger btn-sm"
+																				asp-controller="Comentarios"
+																				asp-action="Delete"
+																				asp-route-id=@c.id>
+																				Eliminar
+																			</a>
+																			}
+																		}
+																	</li>
+																}
+							 							    }
+														}
+													</ul>
+												</div><!--comment-sec end-->
+												<div class="post-comment">
+													<div class="comment_box">
+														<form asp-controller="Comentarios"
+															  asp-action="Create"
+															  asp-route-idp=@p.id
+															  asp-route-idu=@Accessor.HttpContext.Session.GetInt32("_id")> 												     
+															<input type="text" name="contenido" placeholder="Comentario">																
+															<button type="submit">Send</button>
+														</form>
+													</div>
+												</div><!--post-comment end-->
+											</div><!--comment-section end-->
+											}
+
+										</div><!--posty end-->
+										
+									</div><!--posts-section end-->
+
+								</div><!--main-ws-sec end-->
+							</div>
+							<div class="col-lg-3 pd-right-none no-pd">
+								<div class="right-sidebar">
+									<div class="widget suggestions full-width">
+										<div class="sd-title">
+											<h3 >Mis amigos </h3>
+											<span><i class="bi bi-heart-fill"></i></span>
+										</div><!--sd-title end-->
+										@foreach (Usuario u in usuarios) {
+											if(u.id != Accessor.HttpContext.Session.GetInt32("_id"))
+											{
+												foreach (UsuarioAmigo ua in usuarioAmigos)
+												{
+													if(u.id != ua.idAmigo && u.id == ua.idUser)
+													{
+														<div class="suggestions-list">
+															<div class="suggestion-usd">
+																<div class="sgt-text">
+																	<h4>@u.nombre @u.apellido</h4>
+													
+																</div>
+																<span><form asp-controller="UsuarioAmigo"
+																	asp-action="DeleteConfirmed"
+																	asp-route-id=@u.id
+																	asp-route-idAmigo=@ua.idAmigo>
+																	<button																
+																	type="submit"
+																	class="bi bi-x-circle">
+																	</button></form></span>
+															</div>
+														</div>
+													}
+												}
+											}
+										}<!--suggestions-list end-->
+									</div>
+								</div><!--right-sidebar end-->
+							</div>
+						</div>
+						
+					</div><!-- main-section-data end-->
+				</div> 
+			</div>
+		</main>
+
+		<div class="post-popup job_post">
+			<div class="post-project">
+				<h3>Post a job</h3>
+				<div class="post-project-fields">
+					<form 
+					asp-controller="Posts"
+					asp-action="Create"
+					>
+						<div class="row">
+							<div class="col-lg-12">
+								<textarea name="contenido" placeholder="Contenido"></textarea>
+							</div>
+							<div class="col-lg-12">
+								<input type="text" name="tags" placeholder="Tags">
+							</div>
+							<div class="col-lg-12">
+								<ul>
+									<li><button class="active mb-4" type="submit" value="post">Postea</button></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+					@*<form 
+					asp-controller="Tags"
+					asp-action="Create"
+					>
+						<div class="row">
+							<div class="col-lg-12">
+								<input type="text" name="tags" placeholder="Tags">
+							</div>
+							<div class="col-lg-12">
+								<ul>
+									<li><button class="active" type="submit" value="tags">Agregar tag</button></li>
+									
+								</ul>
+							</div>
+						</div>
+					</form>*@
+				</div><!--post-project-fields end-->
+				<a href="#" title=""><i class="bi bi-x-circle accent-dark"></i></a>
+			</div><!--post-project end-->
+		</div><!--post-project-popup end-->
+
+		<!--Busqueda-->
+
+				<div class="post-popup pst-pj">
+			<div class="post-project">
+				<h3>Busqueda</h3>
+				<div class="post-project-fields">
+					<form>
+						<div class="row">
+							<div class="col-lg-12">
+								<input type="text" name="contenido" placeholder="Contenido">
+							</div>
+							<div class="col-lg-12">
+								<input type="text" name="tags" placeholder="Tags">
+							</div>
+							<div class="col-lg-12">
+								<input type="date" name="fecha" placeholder="Fecha">
+							</div>
+							<div class="col-lg-12">
+								<textarea name="text" placeholder="Description"></textarea>
+							</div>
+							<div class="col-lg-12">
+								<ul>
+									<li><button class="active" type="submit" value="post">Buscar</button></li>
+									<li><a href="#" title="">Cancelar</a></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</div><!--post-project-fields end-->
+				<a href="#" title=""><i class="bi bi-x-circle"></i></a>
+			</div><!--post-project end-->
+		</div><!--post-project-popup end-->
+
+
+
+
+	</div><!--theme-layout end-->
+
+</body>
