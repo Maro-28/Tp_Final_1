@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Tp_Final_1.Models
 {
@@ -29,6 +30,18 @@ namespace Tp_Final_1.Models
             this.fecha = DateTime.Now;
         }
 
+        public Post(int id, Usuario user, string contenido, List<Tag> tag)
+        {
+            this.id = id;
+            this.user = user;
+            this.contenido = contenido;
+            reacciones = new List<Reaccion>();
+            comentarios = new List<Comentario>();
+            List<Tag> tags = new List<Tag>();
+            this.fecha = DateTime.Now;
+        }
+
+
         public Post(Usuario user, string contenido)
         {
             this.id = id;
@@ -40,5 +53,24 @@ namespace Tp_Final_1.Models
             this.fecha = DateTime.Now;
         }
 
+        public Post postear(Post post, int id)
+        {
+            
+            DateTime fecha = DateTime.Now;
+            post.fecha = fecha;
+            post.idUser = id;
+            return post;
+        }
+
+        public void agregarTags(int p, string t)
+        {
+            List<string> palabras = t.Split(' ').ToList();
+            foreach (string palabra in palabras)
+            {
+                Tag tag = new Tag();
+                tag.agregarTag(palabra, p);
+            }
+
+        }
     }
 }

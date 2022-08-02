@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Tp_Final_1.Data;
 
 namespace Tp_Final_1.Models
 {
@@ -19,6 +20,25 @@ namespace Tp_Final_1.Models
         {
             this.id = id;
             this.palabra = palabra;
+        }
+
+        public void agregarTag(string t, int idP)
+        {
+            MyContext _context = new MyContext();
+            PostsTags pt = new PostsTags();
+
+            Tag[] tagExist= _context.tags.Where(x => x.palabra == t).ToArray();
+            if (tagExist.Length > 0)
+            {
+                pt.relPostTag(idP, tagExist[0].id);
+            }
+            else
+            {
+                Tag tag = new Tag(t);
+                _context.tags.Add(tag);
+                _context.SaveChanges();
+                pt.relPostTag(idP, tag.id);
+            }
         }
     }
 }

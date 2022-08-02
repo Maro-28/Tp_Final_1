@@ -57,16 +57,23 @@ namespace Tp_Final_1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,idUser,contenido,fecha")] Post post)
+        public async Task<IActionResult> Create([Bind("id,idUser,contenido,fecha")] Post post, string tags)
         {
-            if (ModelState.IsValid)
+            int idI = (int)HttpContext.Session.GetInt32("_id");
+            post.postear(post, idI);
+            _context.Add(post);
+            await _context.SaveChangesAsync();
+            TempData["Message"] = "Posteo realizado";
+
+            if (tags == null)
             {
-                _context.Add(post);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id", post.idUser);
-            return View(post);
+            else
+            {
+                post.agregarTags(post.id, tags);
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Posts/Edit/5
