@@ -214,8 +214,7 @@
 													<div class="comment_box">
 														<form asp-controller="Comentarios"
 															  asp-action="Create"
-															  asp-route-idp=@p.id
-															  asp-route-idu=@Accessor.HttpContext.Session.GetInt32("_id")> 												     
+															  asp-route-idP=@p.id> 												     
 															<input type="text" name="contenido" placeholder="Comentario">																
 															<button type="submit">Send</button>
 														</form>

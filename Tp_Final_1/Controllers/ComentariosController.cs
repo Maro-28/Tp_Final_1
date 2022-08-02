@@ -59,17 +59,14 @@ namespace Tp_Final_1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,idPost,idUser,contenido,fecha")] Comentario comentario)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(comentario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["idPost"] = new SelectList(_context.post, "id", "id", comentario.idPost);
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id", comentario.idUser);
-            return View(comentario);
+        public async Task<IActionResult> Create([Bind("id,idPost,idUser,contenido,fecha")] Comentario comentario, int idP)
+        {          
+            comentario.agregarComentario(idP, comentario);
+            comentario.idUser = (int)HttpContext.Session.GetInt32("_id");
+            _context.Add(comentario);
+            await _context.SaveChangesAsync();
+   
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Comentarios/Edit/5
