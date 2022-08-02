@@ -35,7 +35,6 @@
 											</div><!--username-dt end-->
 											<div class="user-specs">
 												<h3>@Accessor.HttpContext.Session.GetString("_nombre")</h3>
-												<span>Graphic Designer at Self Employed</span>
 											</div>
 										</div><!--user-profile end-->
 										<ul class="user-fw-status">
@@ -62,7 +61,7 @@
 										<div class="sd-title">
 											<h3>Sugerencias de amigos</h3>
 										</div><!--sd-title end-->
-										
+										<div class="suggestions-list">
 										@foreach (Usuario u in usuarios) {
 											if(u.id != Accessor.HttpContext.Session.GetInt32("_id"))
 											{
@@ -77,27 +76,27 @@
 												}
 												if(!listAmigos.Contains(u.id))
 												{
-													<div class="suggestions-list">
-														<div class="suggestion-usd">
-															<div>
-																<img src="~/logoprofile.png" alt="">
-															</div>
-															<div class="sgt-text">
-																<h4>@u.nombre @u.apellido</h4>
-															</div>
-															<span><form 
-																asp-controller="UsuarioAmigoes"
-																asp-action="Create"
-																asp-route-idUser=@Accessor.HttpContext.Session.GetInt32("_id")
-																asp-route-idAmigo=@u.id>
-																<button class="bi bi-person-plus-fill"
-																type="submit"
-																></button></form></span>
+													
+													<div class="suggestion-usd">
+														<div>
+															<img src="~/logoprofile.png" alt="" width="50">
 														</div>
-													</div><!--suggestions-list end-->
+														<div class="sgt-text">
+															<h4>@u.nombre @u.apellido</h4>
+														</div>
+														<span><form 
+															asp-controller="UsuarioAmigoes"
+															asp-action="Create"
+															asp-route-idUser=@Accessor.HttpContext.Session.GetInt32("_id")
+															asp-route-idAmigo=@u.id>
+															<button class="bi bi-person-plus-fill"
+															type="submit"
+															></button></form></span>
+													</div>
 												}
-											}			
+											}
 										}
+										</div><!--suggestions-list end-->
 									</div><!--suggestions end-->
 									<div class="tags-sec full-width">
 										<ul>
@@ -125,6 +124,9 @@
 
 										<div class="posts-section">
 										<div class="posty">
+											@{
+												if (post != null) post = post.OrderByDescending(x => x.id); 
+											}
 											@foreach (Post p in post)
 											{
 												<div class="post-bar no-margin">

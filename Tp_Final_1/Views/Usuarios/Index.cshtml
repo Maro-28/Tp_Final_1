@@ -2,13 +2,17 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    if(null != TempData["Message"])
+    {
+    <script type="text/javascript">
+	    alert('@TempData["Message"]');
+    </script>
+    }
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -68,10 +72,14 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<div>
+    <a  class="btn mt-3 btn-outline-secondary" type="button"
+         asp-controller="Home"
+        asp-action="IndexAdmin">Volver al Home</a>
+</div>

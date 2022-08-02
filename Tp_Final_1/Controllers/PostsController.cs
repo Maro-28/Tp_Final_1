@@ -100,33 +100,20 @@ namespace Tp_Final_1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,idUser,contenido,fecha")] Post post)
         {
-            if (id != post.id)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
+            _context.Update(post);
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = "Post modificado";
+
+            var hola = HttpContext.Session.GetString("_admin");
+
+            if (HttpContext.Session.GetString("_admin") == "True")
             {
-                try
-                {
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PostExists(post.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id", post.idUser);
-            return View(post);
+            return RedirectToAction("Index", "Home");
+
         }
 
         // GET: Posts/Delete/5
@@ -153,18 +140,18 @@ namespace Tp_Final_1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.post == null)
-            {
-                return Problem("Entity set 'MyContext.post'  is null.");
-            }
             var post = await _context.post.FindAsync(id);
-            if (post != null)
-            {
-                _context.post.Remove(post);
-            }
+            _context.post.Remove(post);
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            TempData["Message"] = "Post eliminado";
+
+            if (HttpContext.Session.GetString("_admin") == "True")
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         private bool PostExists(int id)

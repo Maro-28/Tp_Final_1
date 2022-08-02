@@ -13,7 +13,6 @@ namespace Tp_Final_1.Controllers
     public class UsuariosController : Controller
     {
         private readonly MyContext _context;
-
         public UsuariosController(MyContext context)
         {
             _context = context;
@@ -71,7 +70,7 @@ namespace Tp_Final_1.Controllers
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 TempData["MessageLoger"] = "Usuario registrado";
-                return RedirectToAction(nameof(Index), "Login");
+                return RedirectToAction("Index", "Login");
             }
         }
 
@@ -84,6 +83,12 @@ namespace Tp_Final_1.Controllers
             }
 
             var usuario = await _context.usuarios.FindAsync(id);
+
+            if (HttpContext.Session.GetString("_admin") == "True")
+            {
+                return View(usuario);
+            }
+
             usuario.password = "";
             if (usuario == null)
             {
@@ -98,10 +103,19 @@ namespace Tp_Final_1.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([Bind("id,dni,nombre,apellido,email,password,intentosFallidos,bloqueado,isAdm")] Usuario usuario, string current, string newP)
-        {            
+        {
+            if (HttpContext.Session.GetString("_admin") == "True")
+            {
+                _context.Update(usuario);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Usuario modificado correctamente";
+                return RedirectToAction(nameof(Index));
+            }
+
             Usuario[] userList = _context.usuarios.AsNoTracking().Where(x => x.password == current).ToArray();
             Usuario user = usuario.editarUsuario(usuario, newP, userList);
-            if(user.password == "@*@")
+
+            if (user.password == "@*@")
             {
                 TempData["Message"] = "La nueva password no coincide";
                 return View() ; 
@@ -117,7 +131,8 @@ namespace Tp_Final_1.Controllers
                 await _context.SaveChangesAsync();
                 TempData["Message"] = "Usuario modificado correctamente";
             }
-            return RedirectToAction(nameof(Index), "Home");
+
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Usuarios/Delete/5
@@ -152,7 +167,6 @@ namespace Tp_Final_1.Controllers
             {
                 _context.usuarios.Remove(usuario);
             }
-
             
             await _context.SaveChangesAsync();
             if (HttpContext.Session.GetString("_admin").ToString() == "True")

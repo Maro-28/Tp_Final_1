@@ -2,6 +2,13 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    if(null != TempData["Message"])
+    {
+    <script type="text/javascript">
+	    alert('@TempData["Message"]');
+    </script>
+    }
 }
 
 <h1>Listado de Posts</h1>
@@ -38,6 +45,7 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
                 <a asp-controller="Comentarios" asp-action="Create" asp-route-id="@item.id">Comentar</a> |
+                <a asp-controller="Comentarios" asp-action="Index" asp-route-id="@item.id">Ver comentarios</a> |
                 <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
             </td>
         </tr>

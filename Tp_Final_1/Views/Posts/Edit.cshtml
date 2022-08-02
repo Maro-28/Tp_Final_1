@@ -27,7 +27,9 @@
     </div>
 </div>
 
-<div>
+@if(Accessor.HttpContext.Session.GetString("_admin") != "True")
+{
+    <div>
     <a 
         type="button"
         class="mt-3 btn btn-success"
@@ -35,7 +37,21 @@
         asp-action= "Index"
 
         >Volver al Home</a>
-</div>
+    </div>
+}
+else
+{
+    <div>
+    <a 
+        type="button"
+        class="mt-3 btn btn-success"
+        asp-controller= "Posts"
+        asp-action= "Index"
+
+        >Volver al Home</a>
+    </div>
+}
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

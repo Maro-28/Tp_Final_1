@@ -20,8 +20,16 @@ namespace Tp_Final_1.Controllers
         }
 
         // GET: Comentarios
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
+            if(HttpContext.Session.GetString("_admin") == "True")
+            {
+                var myContextAdmin = _context.comentarios.Include(c => c.post).Include(c => c.usuario)
+                    .Where(c => c.idPost == id);
+
+                return View(await myContextAdmin.ToListAsync());
+            }
+
             var myContext = _context.comentarios.Include(c => c.post).Include(c => c.usuario);
             return View(await myContext.ToListAsync());
         }
@@ -47,10 +55,9 @@ namespace Tp_Final_1.Controllers
         }
 
         // GET: Comentarios/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            ViewData["idPost"] = new SelectList(_context.post, "id", "id");
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id");
+            ViewData["idPost"] = id;
             return View();
         }
 
@@ -65,7 +72,13 @@ namespace Tp_Final_1.Controllers
             comentario.idUser = (int)HttpContext.Session.GetInt32("_id");
             _context.Add(comentario);
             await _context.SaveChangesAsync();
-   
+
+            TempData["Message"] = "Comentario realizado";
+
+            if (HttpContext.Session.GetString("_admin") == "True")
+            {
+                return RedirectToAction("Index", "Posts");
+            }
             return RedirectToAction("Index", "Home");
         }
 
@@ -96,9 +109,11 @@ namespace Tp_Final_1.Controllers
         {           
             _context.Update(comentario);
             await _context.SaveChangesAsync();
-            if (HttpContext.Session.GetString("_admin") == "true")
+            TempData["Message"] = "Comentario modificado";
+
+            if (HttpContext.Session.GetString("_admin") == "True")
             {
-                return RedirectToAction("IndexAdmin", "Home");
+                return RedirectToAction("Index", "Posts");
             }
             return RedirectToAction("Index", "Home");     
         }
@@ -134,9 +149,11 @@ namespace Tp_Final_1.Controllers
             _context.comentarios.Remove(comentario);
             await _context.SaveChangesAsync();
 
-            if (HttpContext.Session.GetString("_admin") == "true")
+            TempData["Message"] = "Comentario eliminado";
+
+            if (HttpContext.Session.GetString("_admin") == "True")
             {
-                return RedirectToAction("IndexAdmin", "Home");
+                return RedirectToAction("Index", "Posts");
             }
             return RedirectToAction("Index", "Home");
         }
