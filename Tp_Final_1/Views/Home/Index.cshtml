@@ -322,7 +322,8 @@
 			<div class="post-project">
 				<h3>Busqueda</h3>
 					<div class="post-project-fields">
-						<form>
+						<form asp-controller="Posts"
+							  asp-action="Busqueda">
 							<div class="row">
 								<div class="col-lg-12">
 									<input type="text" name="contenido" placeholder="Contenido Post">

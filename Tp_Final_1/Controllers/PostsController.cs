@@ -155,85 +155,36 @@ namespace Tp_Final_1.Controllers
         }
 
 
-        // GET: Posts/Busqueda/5
-        //public async Task<IActionResult> Busqueda(string? contenido, string? tags, DateTime? fechai, DateTime? fechaf, string? nombre, string? apellido)
+       // GET: Posts/Busqueda/5
+        //public ActionResult Busqueda(string contenido, string tags, DateTime fechai, DateTime fechaf, string nombre, string apellido)
         //{
         //    var consultaPost = _context.post;
         //    var consultaTags = _context.tags;
+        //    var consultaPostTags = _context.PostsTags;
         //    var consultaUser = _context.usuarios.ToList();
-        //    if(consultaPost != null)
-        //    {
-        //        if(contenido != null && tags != null && fechai != null && fechaf != null && nombre != null && apellido != null)
-        //        {
-        //            return View(consultaPost);
-        //        }
-        //        else if (tags != null && fechai != null && fechaf != null && nombre != null && apellido != null)
-        //        {
-        //            consultaPost.Where(x => x.contenido == contenido);
-        //            return View(consultaPost);
-        //        } 
-        //        else if (tags != null && fechaf != null && nombre != null && apellido != null)
-        //        {
-        //            consultaPost.Where(
-        //                x => x.contenido == contenido && 
-        //                x => XmlConfigurationExtensions.);
-        //            return View(consultaPost);
-        //        }
-        //        else if(tags != null && nombre != null && apellido != null)
-        //        {
 
-        //        }
-        //        else if (tags != null && nombre != null)
-        //        {
-
-        //        }
-        //        else if (tags != null)
-        //        {
-
-        //        }
-        //        else
-        //        {
-        //            consultaPost.Where(
-        //                x => x.contenido == contenido &&
-        //                x.fecha >= fechai &&
-        //                x.fecha =< fechaf &&
-        //                x.idUser == consultaUser.Where(x => x.nombre == nombre || x.apellido == apellido).First().id &&
-        //                x.id == _context.PostsTags.Where(x => x.idPost ==
-                        
-        //                _context.tags.Where(t => t.palabra == tags).First().id
-                        
-        //                );
-
-        //        }
-
-
-
-
-
-
-
-
-
-
-        //        Usuario[] idU = _context.usuarios.Where(u => u.nombre == nombre || u.apellido == apellido).ToArray();
-        //        if(idU.Length > 0)
-        //        {
-        //            if (consulta.Where(
-        //                x => x.contenido == contenido &&
-        //                x.fecha >= fechai &&
-        //                x.fecha =< fechaf &&
-        //                x.idUser == idU[0].id);
-        //        }
-                
+           
+        //    List<Tag> tagDbSet;
+        //    tagDbSet = consultaTags.Where(x => x.palabra == tags).ToList();
+        //    var tag = tagDbSet.First();
+           
+        //    if (consultaPostTags != null) {
+        //    var listTagsDbSet = consultaPostTags.Where(t => t.idTag == tag.id);
+      
+        //    var listIdPost = new List<int>();
+        //        foreach (var dbset in listTagsDbSet)
+        //        listIdPost.Add(dbset.idPost);
+           
+        //    consultaPost.Where(
+        //        x => x.contenido == contenido)
+        //        .Where(x => x.fecha >= fechai)
+        //        .Where(x => x.fecha <= fechaf)
+        //        .Where(x => x.idUser == consultaUser.Where(y => y.nombre == nombre && y.apellido == apellido).First().id)
+        //        .Where(x => listIdPost.Contains(x.id));
 
         //    }
-        //    return View(post);
+        //    return  View(consultaPost);
         //}
-
-
-
-
-
 
 
         private bool PostExists(int id)
