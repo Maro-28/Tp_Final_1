@@ -167,82 +167,25 @@ namespace Tp_Final_1.Controllers
             var consultaUser = _context.usuarios.ToList();
             string fDesde = fechai.Date.ToString("dd/MM/yyyy");
             string hDesde = fechaf.Date.ToString("dd/MM/yyyy");
-            DbSet<Post> filter;
+            Tag tag = null;
+            if(consultaTags != null && tags != null)
+             tag = (Tag)consultaTags.Where(x => x.palabra == tags).First();
 
-            Tag tag = (Tag)consultaTags.Where(x => x.palabra == tags).First();
-
-            //List<Tag> tagDbSet = consultaTags.Where(x => x.palabra == tags).ToList();
-            //var listIdPost = new List<int>();
-
-            //if (tagDbSet != null && tagDbSet.Count > 0)
-            //{
-            //    Tag tag = tagDbSet.First();
-
-            //    if (consultaPostTags != null)
-            //    {
-            //        var listTagsDbSet = consultaPostTags.Where(t => t.idTag == tag.id);
-            //        foreach (var dbset in listTagsDbSet)
-            //            listIdPost.Add(dbset.idPost);
-            //    }
-
-            //}
-
-            if (tags != null)
-            {
-                if (contenido != null)
-                {
-                    if (fDesde != "1/1/0001 00:00:00" || hDesde != "1/1/0001 00:00:00")
-                    {
-                        if (nombre != null)
-                        {
-                            if (apellido != null)
-                            {
-                                filter = (DbSet<Post>)consultaPost
-                                    .Where(x => x.contenido == contenido)
-                                    .Where(x => x.fecha >= fechai)
-                                    .Where(x => x.fecha <= fechaf)
-                                    .Where(x => x.user.nombre == nombre).Where(x => x.user.apellido == apellido)
-                                    .Where(x => x.Tag.Contains(tag));
-                            }
-                            else
-                            {
-                                filter = (DbSet<Post>)consultaPost
-                                    .Where(x => x.contenido == contenido)
-                                    .Where(x => x.fecha >= fechai)
-                                    .Where(x => x.fecha <= fechaf)
-                                    .Where(x => x.user.nombre == nombre)
-                                    .Where(x => x.Tag.Contains(tag));
-                            }
-                        }
-                        else if (apellido != null)
-                        {
-                            filter = (DbSet<Post>)consultaPost
-                              .Where(x => x.contenido == contenido)
-                              .Where(x => x.fecha >= fechai)
-                              .Where(x => x.fecha <= fechaf)
-                              .Where(x => x.user.nombre == nombre).Where(x => x.user.apellido == apellido)
-                              .Where(x => x.Tag.Contains(tag));
-                        }
-                    }
-                }
-            }
-
-            
-            if (contenido == null && tags == null && nombre == null && apellido == null)
-            {
-                filter = consultaPost;
-            }
-            else
-            {
-                filter = (DbSet<Post>)consultaPost
-                    .Where(x => x.contenido == contenido)
-                    .Where(x => x.fecha >= fechai)
-                    .Where(x => x.fecha <= fechaf)
-                    .Where(x => x.user.nombre == nombre).Where(x => x.user.apellido == apellido)
-                    .Where(x => x.Tag.Contains(tag));
-            }           
-
-            return View(filter);
+            IQueryable<Post> query = (DbSet<Post>)consultaPost;
+            if(contenido != null)
+                query = query.Where(x => x.contenido == contenido);
+            if (fDesde != "01/01/0001")
+                query = query.Where(x => x.fecha >= fechai);
+            if (hDesde != "01/01/0001")
+                query = query.Where(x => x.fecha <= fechaf);
+            if (nombre != null)
+                query = query.Where(x => x.user.nombre == nombre);
+            if (apellido != null)
+                query = query.Where(x => x.user.apellido == apellido);
+            if(tag != null)
+                query = query.Where(x => x.Tag.Contains(tag));
+                           
+            return View(query.ToList());
         }
 
 
