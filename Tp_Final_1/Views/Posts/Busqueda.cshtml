@@ -4,11 +4,6 @@
     ViewData["Title"] = "Busqueda";
 }
 
-<h1>Busqueda</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -16,10 +11,10 @@
                 Usuario
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.contenido)
+                Contenido del post
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.fecha)
+                Fecha del post
             </th>
             <th></th>
         </tr>
@@ -28,7 +23,8 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.user.nombre, item.user.apellido)
+                @Html.DisplayFor(modelItem => item.user.nombre)
+                @Html.DisplayFor(modelItem => item.user.apellido)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.contenido)
@@ -41,3 +37,10 @@
 }
     </tbody>
 </table>
+
+<a 
+    type="button"
+    class="mt-3 btn btn-success"
+    asp-controller="Home"
+    asp-action="Index">
+    Volver al Home</a>
