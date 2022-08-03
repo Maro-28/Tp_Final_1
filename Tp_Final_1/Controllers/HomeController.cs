@@ -17,7 +17,7 @@ namespace Tp_Final_1.Controllers
         {
             _context.post.Include(p => p.Tag).Load();
             _context.tags.Include(t => t.Post).Load();
-        
+            _context.reacciones.Load();
             var postContext = _context.post.Include(p => p.user);
             var comenContext = _context.comentarios;
             var usuariosContext = _context.usuarios;
@@ -35,7 +35,7 @@ namespace Tp_Final_1.Controllers
 
         public IActionResult IndexAdmin()
         {
-            MyContext _context = new MyContext();
+            
             var postContext = _context.post.Count();
             var usuariosContext = _context.usuarios.Count();
             var tagsContext = _context.tags.Count();

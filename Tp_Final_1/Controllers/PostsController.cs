@@ -154,6 +154,88 @@ namespace Tp_Final_1.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+        // GET: Posts/Busqueda/5
+        //public async Task<IActionResult> Busqueda(string? contenido, string? tags, DateTime? fechai, DateTime? fechaf, string? nombre, string? apellido)
+        //{
+        //    var consultaPost = _context.post;
+        //    var consultaTags = _context.tags;
+        //    var consultaUser = _context.usuarios.ToList();
+        //    if(consultaPost != null)
+        //    {
+        //        if(contenido != null && tags != null && fechai != null && fechaf != null && nombre != null && apellido != null)
+        //        {
+        //            return View(consultaPost);
+        //        }
+        //        else if (tags != null && fechai != null && fechaf != null && nombre != null && apellido != null)
+        //        {
+        //            consultaPost.Where(x => x.contenido == contenido);
+        //            return View(consultaPost);
+        //        } 
+        //        else if (tags != null && fechaf != null && nombre != null && apellido != null)
+        //        {
+        //            consultaPost.Where(
+        //                x => x.contenido == contenido && 
+        //                x => XmlConfigurationExtensions.);
+        //            return View(consultaPost);
+        //        }
+        //        else if(tags != null && nombre != null && apellido != null)
+        //        {
+
+        //        }
+        //        else if (tags != null && nombre != null)
+        //        {
+
+        //        }
+        //        else if (tags != null)
+        //        {
+
+        //        }
+        //        else
+        //        {
+        //            consultaPost.Where(
+        //                x => x.contenido == contenido &&
+        //                x.fecha >= fechai &&
+        //                x.fecha =< fechaf &&
+        //                x.idUser == consultaUser.Where(x => x.nombre == nombre || x.apellido == apellido).First().id &&
+        //                x.id == _context.PostsTags.Where(x => x.idPost ==
+                        
+        //                _context.tags.Where(t => t.palabra == tags).First().id
+                        
+        //                );
+
+        //        }
+
+
+
+
+
+
+
+
+
+
+        //        Usuario[] idU = _context.usuarios.Where(u => u.nombre == nombre || u.apellido == apellido).ToArray();
+        //        if(idU.Length > 0)
+        //        {
+        //            if (consulta.Where(
+        //                x => x.contenido == contenido &&
+        //                x.fecha >= fechai &&
+        //                x.fecha =< fechaf &&
+        //                x.idUser == idU[0].id);
+        //        }
+                
+
+        //    }
+        //    return View(post);
+        //}
+
+
+
+
+
+
+
         private bool PostExists(int id)
         {
             return (_context.post?.Any(e => e.id == id)).GetValueOrDefault();

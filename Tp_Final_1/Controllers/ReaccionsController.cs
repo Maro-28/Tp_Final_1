@@ -26,34 +26,6 @@ namespace Tp_Final_1.Controllers
             return View(await myContext.ToListAsync());
         }
 
-        // GET: Reaccions/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.reacciones == null)
-            {
-                return NotFound();
-            }
-
-            var reaccion = await _context.reacciones
-                .Include(r => r.post)
-                .Include(r => r.usuario)
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (reaccion == null)
-            {
-                return NotFound();
-            }
-
-            return View(reaccion);
-        }
-
-        // GET: Reaccions/Create
-        public IActionResult Create()
-        {
-            ViewData["idPost"] = new SelectList(_context.post, "id", "id");
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id");
-            return View();
-        }
-
         // POST: Reaccions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -61,33 +33,33 @@ namespace Tp_Final_1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,tipoReaccion,idPost,idUser")] Reaccion reaccion)
         {
-            if (ModelState.IsValid)
+            int idI = (int)HttpContext.Session.GetInt32("_id");
+            reaccion.agregarReaccion(reaccion, idI);
+
+            Reaccion[] exist = _context.reacciones.AsNoTracking().Where(r => r.idUser == idI &&
+                                                                        r.idPost == reaccion.idPost).ToArray();
+           if (exist.Length > 0)
             {
+                if (exist[0].tipoReaccion == reaccion.tipoReaccion)
+                {
+                    TempData["Message"] = "Usted ya reacciono de esta forma";
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    TempData["Message"] = "Su reaccion fue modificada";
+                    await this.Edit(exist[0].id, reaccion);
+                }
+            }
+            else
+            {
+                TempData["Message"] = "Su reaccion fue ingresada";
                 _context.Add(reaccion);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["idPost"] = new SelectList(_context.post, "id", "id", reaccion.idPost);
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id", reaccion.idUser);
-            return View(reaccion);
-        }
-
-        // GET: Reaccions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.reacciones == null)
-            {
-                return NotFound();
             }
 
-            var reaccion = await _context.reacciones.FindAsync(id);
-            if (reaccion == null)
-            {
-                return NotFound();
-            }
-            ViewData["idPost"] = new SelectList(_context.post, "id", "id", reaccion.idPost);
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id", reaccion.idUser);
-            return View(reaccion);
+            return RedirectToAction("Index", "Home");
+
         }
 
         // POST: Reaccions/Edit/5
@@ -97,34 +69,10 @@ namespace Tp_Final_1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,tipoReaccion,idPost,idUser")] Reaccion reaccion)
         {
-            if (id != reaccion.id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(reaccion);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ReaccionExists(reaccion.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["idPost"] = new SelectList(_context.post, "id", "id", reaccion.idPost);
-            ViewData["idUser"] = new SelectList(_context.usuarios, "id", "id", reaccion.idUser);
-            return View(reaccion);
+            reaccion.id = id;
+            _context.Update(reaccion);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Reaccions/Delete/5

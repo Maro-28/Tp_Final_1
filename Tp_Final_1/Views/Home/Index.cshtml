@@ -32,11 +32,11 @@
 												<div class="usr-pic">
 													<img src="~/logoprofile.png" alt="">
 												</div>
-											</div><!--username-dt end-->
+											</div>
 											<div class="user-specs">
 												<h3>@Accessor.HttpContext.Session.GetString("_nombre")</h3>
 											</div>
-										</div><!--user-profile end-->
+										</div>
 										<ul class="user-fw-status">
 											<li>
 												<a asp-controller="Usuarios"
@@ -56,48 +56,49 @@
 													Cerrar sesion</a>
 											</li>
 										</ul>
-									</div><!--user-data end-->
+									</div>
 									<div class="suggestions full-width">
 										<div class="sd-title">
 											<h3>Sugerencias de amigos</h3>
-										</div><!--sd-title end-->
-										<div class="suggestions-list">
-										@foreach (Usuario u in usuarios) {
-											if(u.id != Accessor.HttpContext.Session.GetInt32("_id"))
-											{
-												List<int> listAmigos = new List<int>();
-
-												foreach(UsuarioAmigo ua in usuarioAmigos)
-												{
-													if(ua.idUser == Accessor.HttpContext.Session.GetInt32("_id"))
+										</div>
+											<div class="suggestions-list">
+												@foreach (Usuario u in usuarios) {
+													if(u.id != Accessor.HttpContext.Session.GetInt32("_id"))
 													{
-														listAmigos.Add(ua.idAmigo);
+														List<int> listAmigos = new List<int>();
+
+														foreach(UsuarioAmigo ua in usuarioAmigos)
+														{
+															if(ua.idUser == Accessor.HttpContext.Session.GetInt32("_id"))
+															{
+																listAmigos.Add(ua.idAmigo);
+															}
+														}
+														if(!listAmigos.Contains(u.id))
+														{
+															<div class="suggestion-usd">
+																<div>
+																	<img src="~/logoprofile.png" alt="" width="50">
+																</div>
+																<div class="sgt-text">
+																	<h4>@u.nombre @u.apellido</h4>
+																</div>
+																<span>
+																	<form 
+																		asp-controller="UsuarioAmigoes"
+																		asp-action="Create"
+																		asp-route-idUser=@Accessor.HttpContext.Session.GetInt32("_id")
+																		asp-route-idAmigo=@u.id>
+																		<button style="padding : 2px" class="bi bi-person-plus-fill"
+																		type="submit"></button>
+																	</form>
+																</span>
+															</div>
+														}
 													}
 												}
-												if(!listAmigos.Contains(u.id))
-												{
-													
-													<div class="suggestion-usd">
-														<div>
-															<img src="~/logoprofile.png" alt="" width="50">
-														</div>
-														<div class="sgt-text">
-															<h4>@u.nombre @u.apellido</h4>
-														</div>
-														<span><form 
-															asp-controller="UsuarioAmigoes"
-															asp-action="Create"
-															asp-route-idUser=@Accessor.HttpContext.Session.GetInt32("_id")
-															asp-route-idAmigo=@u.id>
-															<button class="bi bi-person-plus-fill"
-															type="submit"
-															></button></form></span>
-													</div>
-												}
-											}
-										}
-										</div><!--suggestions-list end-->
-									</div><!--suggestions end-->
+											</div>
+									</div>
 									<div class="tags-sec full-width">
 										<ul>
 											<li><a href="#" title="">Privacy Policy</a></li>
@@ -106,12 +107,10 @@
 											<img src="images/logo2.png" alt="">
 											<p><img src="images/cp.png" alt="">Copyright 2019</p>
 										</div>
-									</div><!--tags-sec end-->
-								</div><!--main-left-sidebar end-->
+									</div>
+								</div>
 							</div>
-
-							
-								<div class="col-lg-6 col-md-8 no-pd">
+							<div class="col-lg-6 col-md-8 no-pd">
 								<div class="main-ws-sec">
 									<div class="post-topbar">
 										<div class="post-st">
@@ -119,10 +118,9 @@
 												<li><a class="post_project" href="#" title="">Buscar</a></li>
 												<li><a class="post-jb active" href="#" title="">Publicar</a></li>
 											</ul>
-										</div><!--post-st end-->
-									</div><!--post-topbar end-->
-
-										<div class="posts-section">
+										</div>
+									</div>
+									<div class="posts-section">
 										<div class="posty">
 											@{
 												if (post != null) post = post.OrderByDescending(x => x.id); 
@@ -137,47 +135,58 @@
 														</div>
 													</div>
 												</div>
-
 												<div class="job_descp">
 													@if(p.idUser == @Accessor.HttpContext.Session.GetInt32("_id"))
 													{
 														<ul class="job-dt">
-															<li><a 
-																asp-controller="Posts"
-																asp-action="Edit"
-																asp-route-id=@p.id>Editar Post</a></li>
-															<li><a 
-																asp-controller="Posts"
-																asp-action="Delete"
-																asp-route-id=@p.id>Eliminar Post</a></li>
+															<li>
+																<a 
+																	asp-controller="Posts"
+																	asp-action="Edit"
+																	asp-route-id=@p.id>Editar Post</a>
+															</li>
+															<li>
+																<a 
+																	asp-controller="Posts"
+																	asp-action="Delete"
+																	asp-route-id=@p.id>Eliminar Post</a>
+															</li>
 														</ul>
-
 													}
 													<p>@p.contenido</p>
 													<ul class="skill-tags">
-																				<!-- Listado de Tags-->				
+															<!-- Listado de Tags-->				
 														@foreach (Tag t in p.Tag)
 														{
-														<li><a href="#" title="">@t.palabra</a></li>		
+														<li><a>@t.palabra</a></li>		
 														}
 													</ul>
 												</div>
-													
-													
 												<div class="job-status-bar">
-																										<!-- Listado de reacciones-->
+															<!-- Listado de reacciones-->
 													<ul class="like-com">
 														<li>
-															<a href="#"><i class="bi bi-person-heart"></i> Like</a>
+															<form 
+																asp-controller="Reaccions"
+																asp-action="Create"
+																asp-route-idPost=@p.id
+																asp-route-tipoReaccion="Me Gusta">
+																<button style="padding : 2px" type="submit" class="bi bi-person-heart com"> Me Gusta @p.reacciones.Where(x => x.tipoReaccion == "Me Gusta").Count()</button>
+															</form>
 														</li>
 														<li>
-															<a href="#"><i class="bi bi-person-dash-fill"></i>Don't Like</a>
+															<form 
+																asp-controller="Reaccions"
+																asp-action="Create"
+																asp-route-idPost=@p.id
+																asp-route-tipoReaccion="No me Gusta">
+
+																<button style="padding : 2px" type="submit" class="bi bi-person-dash-fill com"> No me Gusta @p.reacciones.Where(x => x.tipoReaccion == "No me Gusta").Count()</button>
+															</form>	
 														</li>
 													</ul>
 												</div>
-
-
-											</div><!--post-bar end asd-->
+											</div>
 											<div class="comment-section">
 												<div class="comment-sec">
 													<ul>
@@ -191,7 +200,7 @@
 																				<h3>@c.usuario.nombre @c.usuario.apellido</h3>
 																				<p>@c.contenido</p>
 																			</div>
-																		</div><!--comment-list end-->
+																		</div>
 																		@{
 																			if(c.idUser == @Accessor.HttpContext.Session.GetInt32("_id")){
 																				<a 
@@ -215,25 +224,24 @@
 							 							    }
 														}
 													</ul>
-												</div><!--comment-sec end-->
+												</div>
 												<div class="post-comment">
 													<div class="comment_box">
-														<form asp-controller="Comentarios"
-															  asp-action="Create"
-															  asp-route-idP=@p.id> 												     
+														<form 
+															asp-controller="Comentarios"
+															asp-action="Create"
+															asp-route-idP=@p.id>
+															
 															<input type="text" name="contenido" placeholder="Comentario">																
 															<button type="submit">Send</button>
 														</form>
 													</div>
-												</div><!--post-comment end-->
-											</div><!--comment-section end-->
+												</div>
+											</div>
 											}
-
-										</div><!--posty end-->
-										
-									</div><!--posts-section end-->
-
-								</div><!--main-ws-sec end-->
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="col-lg-3 pd-right-none no-pd">
 								<div class="right-sidebar">
@@ -241,7 +249,7 @@
 										<div class="sd-title">
 											<h3 >Mis amigos </h3>
 											<span><i class="bi bi-heart-fill"></i></span>
-										</div><!--sd-title end-->
+										</div>
 										@foreach (Usuario u in usuarios) {
 											if(u.id != Accessor.HttpContext.Session.GetInt32("_id"))
 											{
@@ -253,16 +261,19 @@
 															<div class="suggestion-usd">
 																<div class="sgt-text">
 																	<h4>@u.nombre @u.apellido</h4>
-													
 																</div>
-																<span><form asp-controller="UsuarioAmigoes"
-																	asp-action="DeleteConfirmed"
-																	asp-route-idUser=@u.id
-																	asp-route-idAmigo=@ua.idAmigo>
-																	<button																
-																	type="submit"
-																	class="bi bi-x-circle">
-																	</button></form></span>
+																<span>
+																	<form asp-controller="UsuarioAmigoes"
+																		asp-action="DeleteConfirmed"
+																		asp-route-idUser=@u.id
+																		asp-route-idAmigo=@ua.idAmigo>
+																			<button
+																				style="padding : 2px"
+																				type="submit"
+																				class="bi bi-x-circle">
+																			</button>
+																	</form>
+																</span>
 															</div>
 														</div>
 													}
@@ -273,7 +284,6 @@
 								</div><!--right-sidebar end-->
 							</div>
 						</div>
-						
 					</div><!-- main-section-data end-->
 				</div> 
 			</div>
@@ -281,7 +291,7 @@
 
 		<div class="post-popup job_post">
 			<div class="post-project">
-				<h3>Post a job</h3>
+				<h3>Publicar</h3>
 				<div class="post-project-fields">
 					<form 
 					asp-controller="Posts"
@@ -308,40 +318,40 @@
 
 		<!--Busqueda-->
 
-				<div class="post-popup pst-pj">
+		<div class="post-popup pst-pj">
 			<div class="post-project">
 				<h3>Busqueda</h3>
-				<div class="post-project-fields">
-					<form>
-						<div class="row">
-							<div class="col-lg-12">
-								<input type="text" name="contenido" placeholder="Contenido">
+					<div class="post-project-fields">
+						<form>
+							<div class="row">
+								<div class="col-lg-12">
+									<input type="text" name="contenido" placeholder="Contenido Post">
+								</div>
+								<div class="col-lg-12">
+									<input type="text" name="tags" placeholder="Tags">
+								</div>
+								<div class="col-lg-12">
+									<input type="date" name="fechai" placeholder="Fecha Desde">
+								</div>
+								<div class="col-lg-12">
+									<input type="date" name="fechaf" placeholder="Fecha Hasta">
+								</div>
+								<div class="col-lg-12">
+									<input type="text" name="nombre" placeholder="Nombre Usuario">
+								</div>
+								<div class="col-lg-12">
+									<input type="text" name="apellido" placeholder="Apellido Usuario">
+								</div>
+								<div class="col-lg-12">
+									<ul>
+										<li><button class="active" type="submit" value="post">Buscar</button></li>
+									</ul>
+								</div>
 							</div>
-							<div class="col-lg-12">
-								<input type="text" name="tags" placeholder="Tags">
-							</div>
-							<div class="col-lg-12">
-								<input type="date" name="fecha" placeholder="Fecha">
-							</div>
-							<div class="col-lg-12">
-								<textarea name="text" placeholder="Description"></textarea>
-							</div>
-							<div class="col-lg-12">
-								<ul>
-									<li><button class="active" type="submit" value="post">Buscar</button></li>
-									<li><a href="#" title="">Cancelar</a></li>
-								</ul>
-							</div>
-						</div>
-					</form>
-				</div><!--post-project-fields end-->
+						</form>
+					</div><!--post-project-fields end-->
 				<a href="#" title=""><i class="bi bi-x-circle"></i></a>
 			</div><!--post-project end-->
 		</div><!--post-project-popup end-->
-
-
-
-
 	</div><!--theme-layout end-->
-
 </body>

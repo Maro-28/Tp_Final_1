@@ -34,5 +34,12 @@ namespace Tp_Final_1.Models
 
         }
 
+        public Reaccion agregarReaccion(Reaccion reaccion, int id)
+        {
+            reaccion.idUser = id;
+            return reaccion;
+
+        }
+
     }
 }

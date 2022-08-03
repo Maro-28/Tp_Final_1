@@ -1,4 +1,6 @@
 ﻿@model Tp_Final_1.Models.Comentario
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor Accessor
+
 
 @{
     ViewData["Title"] = "Edit";
@@ -22,10 +24,32 @@
                 <span asp-validation-for="contenido" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />  |
-                <a asp-controller="Home"
-                    asp-action="Index">Volver al menu</a>
+                <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
+            @if(Accessor.HttpContext.Session.GetString("_admin") != "True")
+            {
+                <div>
+                <a 
+                    type="button"
+                    class="mt-3 btn btn-success"
+                    asp-controller= "Home"
+                    asp-action= "Index"
+
+                    >Volver al Home</a>
+                </div>
+            }
+            else
+            {
+                <div>
+                <a 
+                    type="button"
+                    class="mt-3 btn btn-success"
+                    asp-controller= "Posts"
+                    asp-action= "Index"
+
+                    >Volver al Home</a>
+                </div>
+            }
         </form>
     </div>
 </div>
