@@ -155,7 +155,7 @@ namespace Tp_Final_1.Controllers
         }
 
 
-       // GET: Posts/Busqueda/5
+        //GET: Posts/Busqueda/5
         //public ActionResult Busqueda(string contenido, string tags, DateTime fechai, DateTime fechaf, string nombre, string apellido)
         //{
         //    var consultaPost = _context.post;
@@ -163,27 +163,33 @@ namespace Tp_Final_1.Controllers
         //    var consultaPostTags = _context.PostsTags;
         //    var consultaUser = _context.usuarios.ToList();
 
-           
-        //    List<Tag> tagDbSet;
-        //    tagDbSet = consultaTags.Where(x => x.palabra == tags).ToList();
-        //    var tag = tagDbSet.First();
-           
-        //    if (consultaPostTags != null) {
-        //    var listTagsDbSet = consultaPostTags.Where(t => t.idTag == tag.id);
-      
-        //    var listIdPost = new List<int>();
-        //        foreach (var dbset in listTagsDbSet)
-        //        listIdPost.Add(dbset.idPost);
-           
-        //    consultaPost.Where(
-        //        x => x.contenido == contenido)
-        //        .Where(x => x.fecha >= fechai)
-        //        .Where(x => x.fecha <= fechaf)
-        //        .Where(x => x.idUser == consultaUser.Where(y => y.nombre == nombre && y.apellido == apellido).First().id)
-        //        .Where(x => listIdPost.Contains(x.id));
 
+
+        //    List<Tag> tagDbSet = consultaTags.Where(x => x.palabra == tags).ToList();
+        //    var listIdPost = new List<int>();
+
+        //    if (tagDbSet != null && tagDbSet.Count > 0)
+        //    {
+        //        Tag tag = tagDbSet.First();
+
+        //        if (consultaPostTags != null)
+        //        {
+        //            var listTagsDbSet = consultaPostTags.Where(t => t.idTag == tag.id);
+        //            foreach (var dbset in listTagsDbSet)
+        //                listIdPost.Add(dbset.idPost);
+        //        }
+                
         //    }
-        //    return  View(consultaPost);
+
+
+        //    var filter = consultaPost.Where(
+        //        x => x.contenido == contenido);
+        //        //.Where(x => x.fecha >= fechai)
+        //        //.Where(x => x.fecha <= fechaf)
+        //        //.Where(x => x.idUser == consultaUser.Where(y => y.nombre == nombre).Where(y => y.apellido == apellido).First().id)
+        //        //.Where(x => listIdPost.Contains(x.id));
+                
+        //    return View(filter);
         //}
 
 
