@@ -12,7 +12,7 @@ using Tp_Final_1.Data;
 namespace Tp_Final_1.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220801230006_inicial")]
+    [Migration("20220803232857_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,25 +57,41 @@ namespace Tp_Final_1.Migrations
                         new
                         {
                             id = 1,
-                            contenido = "Argentina",
-                            fecha = new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8055),
+                            contenido = "Hola todo bien y vos?",
+                            fecha = new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4692),
                             idPost = 1,
-                            idUser = 1
+                            idUser = 2
                         },
                         new
                         {
                             id = 2,
-                            contenido = "Argentina",
-                            fecha = new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8064),
-                            idPost = 2,
+                            contenido = "Hola como estas?",
+                            fecha = new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4702),
+                            idPost = 3,
                             idUser = 2
                         },
                         new
                         {
                             id = 3,
-                            contenido = "Argentina",
-                            fecha = new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8070),
+                            contenido = "Hola!!!",
+                            fecha = new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4708),
                             idPost = 3,
+                            idUser = 3
+                        },
+                        new
+                        {
+                            id = 4,
+                            contenido = "Buenas!",
+                            fecha = new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4714),
+                            idPost = 5,
+                            idUser = 1
+                        },
+                        new
+                        {
+                            id = 5,
+                            contenido = "Argentina",
+                            fecha = new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4720),
+                            idPost = 4,
                             idUser = 3
                         });
                 });
@@ -109,22 +125,36 @@ namespace Tp_Final_1.Migrations
                         {
                             id = 1,
                             contenido = "Como estan?",
-                            fecha = new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8023),
+                            fecha = new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4647),
                             idUser = 1
                         },
                         new
                         {
                             id = 2,
                             contenido = "Todo bien por suerte",
-                            fecha = new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8041),
+                            fecha = new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4668),
                             idUser = 2
                         },
                         new
                         {
                             id = 3,
                             contenido = "Hola",
-                            fecha = new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8047),
+                            fecha = new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4673),
                             idUser = 3
+                        },
+                        new
+                        {
+                            id = 4,
+                            contenido = "De donde son?",
+                            fecha = new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4679),
+                            idUser = 4
+                        },
+                        new
+                        {
+                            id = 5,
+                            contenido = "Hola",
+                            fecha = new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4684),
+                            idUser = 5
                         });
                 });
 
@@ -141,6 +171,108 @@ namespace Tp_Final_1.Migrations
                     b.HasIndex("idTag");
 
                     b.ToTable("Posts_Tags", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            idPost = 1,
+                            idTag = 5
+                        },
+                        new
+                        {
+                            idPost = 1,
+                            idTag = 8
+                        },
+                        new
+                        {
+                            idPost = 1,
+                            idTag = 9
+                        },
+                        new
+                        {
+                            idPost = 1,
+                            idTag = 3
+                        },
+                        new
+                        {
+                            idPost = 2,
+                            idTag = 10
+                        },
+                        new
+                        {
+                            idPost = 2,
+                            idTag = 5
+                        },
+                        new
+                        {
+                            idPost = 2,
+                            idTag = 9
+                        },
+                        new
+                        {
+                            idPost = 2,
+                            idTag = 3
+                        },
+                        new
+                        {
+                            idPost = 3,
+                            idTag = 2
+                        },
+                        new
+                        {
+                            idPost = 3,
+                            idTag = 5
+                        },
+                        new
+                        {
+                            idPost = 3,
+                            idTag = 6
+                        },
+                        new
+                        {
+                            idPost = 3,
+                            idTag = 8
+                        },
+                        new
+                        {
+                            idPost = 4,
+                            idTag = 8
+                        },
+                        new
+                        {
+                            idPost = 4,
+                            idTag = 5
+                        },
+                        new
+                        {
+                            idPost = 4,
+                            idTag = 2
+                        },
+                        new
+                        {
+                            idPost = 4,
+                            idTag = 1
+                        },
+                        new
+                        {
+                            idPost = 5,
+                            idTag = 10
+                        },
+                        new
+                        {
+                            idPost = 5,
+                            idTag = 2
+                        },
+                        new
+                        {
+                            idPost = 5,
+                            idTag = 5
+                        },
+                        new
+                        {
+                            idPost = 5,
+                            idTag = 6
+                        });
                 });
 
             modelBuilder.Entity("Tp_Final_1.Models.Reaccion", b =>
@@ -185,6 +317,58 @@ namespace Tp_Final_1.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Tag", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            palabra = "Bienvenida"
+                        },
+                        new
+                        {
+                            id = 2,
+                            palabra = "love"
+                        },
+                        new
+                        {
+                            id = 3,
+                            palabra = "instagood"
+                        },
+                        new
+                        {
+                            id = 4,
+                            palabra = "fashion"
+                        },
+                        new
+                        {
+                            id = 5,
+                            palabra = "photooftheday"
+                        },
+                        new
+                        {
+                            id = 6,
+                            palabra = "art"
+                        },
+                        new
+                        {
+                            id = 7,
+                            palabra = "photography"
+                        },
+                        new
+                        {
+                            id = 8,
+                            palabra = "instagram"
+                        },
+                        new
+                        {
+                            id = 9,
+                            palabra = "beautiful"
+                        },
+                        new
+                        {
+                            id = 10,
+                            palabra = "nature"
+                        });
                 });
 
             modelBuilder.Entity("Tp_Final_1.Models.Usuario", b =>
@@ -234,7 +418,7 @@ namespace Tp_Final_1.Migrations
                             apellido = "Rojas",
                             bloqueado = false,
                             dni = 111,
-                            email = "mariano@mail.com",
+                            email = "Mariano@mail.com",
                             intentosFallidos = 0,
                             isAdm = true,
                             nombre = "Mariano",
@@ -246,7 +430,7 @@ namespace Tp_Final_1.Migrations
                             apellido = "Carballal",
                             bloqueado = false,
                             dni = 222,
-                            email = "alan@mail.com",
+                            email = "Alan@mail.com",
                             intentosFallidos = 0,
                             isAdm = false,
                             nombre = "Alan",
@@ -257,12 +441,36 @@ namespace Tp_Final_1.Migrations
                             id = 3,
                             apellido = "Fraga",
                             bloqueado = false,
-                            dni = 222,
+                            dni = 333,
                             email = "Manuel@mail.com",
                             intentosFallidos = 0,
                             isAdm = false,
                             nombre = "Manuel",
                             password = "333"
+                        },
+                        new
+                        {
+                            id = 4,
+                            apellido = "Lezcano",
+                            bloqueado = true,
+                            dni = 444,
+                            email = "Paula@mail.com",
+                            intentosFallidos = 0,
+                            isAdm = false,
+                            nombre = "Paula",
+                            password = "444"
+                        },
+                        new
+                        {
+                            id = 5,
+                            apellido = "Ghislanzoni",
+                            bloqueado = false,
+                            dni = 555,
+                            email = "Marianog@mail.com",
+                            intentosFallidos = 2,
+                            isAdm = false,
+                            nombre = "Mariano",
+                            password = "555"
                         });
                 });
 
@@ -279,6 +487,18 @@ namespace Tp_Final_1.Migrations
                     b.HasIndex("idUser");
 
                     b.ToTable("Usuario_Amigo", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            idAmigo = 3,
+                            idUser = 2
+                        },
+                        new
+                        {
+                            idAmigo = 2,
+                            idUser = 3
+                        });
                 });
 
             modelBuilder.Entity("Tp_Final_1.Models.Comentario", b =>

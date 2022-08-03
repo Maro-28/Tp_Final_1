@@ -166,49 +166,93 @@ namespace Tp_Final_1.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Usuarios",
-                columns: new[] { "id", "apellido", "bloqueado", "dni", "email", "intentosFallidos", "isAdm", "nombre", "password" },
-                values: new object[] { 1, "Rojas", false, 111, "mariano@mail.com", 0, true, "Mariano", "111" });
+                table: "Tag",
+                columns: new[] { "id", "palabra" },
+                values: new object[,]
+                {
+                    { 1, "Bienvenida" },
+                    { 2, "love" },
+                    { 3, "instagood" },
+                    { 4, "fashion" },
+                    { 5, "photooftheday" },
+                    { 6, "art" },
+                    { 7, "photography" },
+                    { 8, "instagram" },
+                    { 9, "beautiful" },
+                    { 10, "nature" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "id", "apellido", "bloqueado", "dni", "email", "intentosFallidos", "isAdm", "nombre", "password" },
-                values: new object[] { 2, "Carballal", false, 222, "alan@mail.com", 0, false, "Alan", "222" });
-
-            migrationBuilder.InsertData(
-                table: "Usuarios",
-                columns: new[] { "id", "apellido", "bloqueado", "dni", "email", "intentosFallidos", "isAdm", "nombre", "password" },
-                values: new object[] { 3, "Fraga", false, 222, "Manuel@mail.com", 0, false, "Manuel", "333" });
-
-            migrationBuilder.InsertData(
-                table: "Post",
-                columns: new[] { "id", "contenido", "fecha", "idUser" },
-                values: new object[] { 1, "Como estan?", new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8023), 1 });
+                values: new object[,]
+                {
+                    { 1, "Rojas", false, 111, "Mariano@mail.com", 0, true, "Mariano", "111" },
+                    { 2, "Carballal", false, 222, "Alan@mail.com", 0, false, "Alan", "222" },
+                    { 3, "Fraga", false, 333, "Manuel@mail.com", 0, false, "Manuel", "333" },
+                    { 4, "Lezcano", true, 444, "Paula@mail.com", 0, false, "Paula", "444" },
+                    { 5, "Ghislanzoni", false, 555, "Marianog@mail.com", 2, false, "Mariano", "555" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Post",
                 columns: new[] { "id", "contenido", "fecha", "idUser" },
-                values: new object[] { 2, "Todo bien por suerte", new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8041), 2 });
+                values: new object[,]
+                {
+                    { 1, "Como estan?", new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4647), 1 },
+                    { 2, "Todo bien por suerte", new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4668), 2 },
+                    { 3, "Hola", new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4673), 3 },
+                    { 4, "De donde son?", new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4679), 4 },
+                    { 5, "Hola", new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4684), 5 }
+                });
 
             migrationBuilder.InsertData(
-                table: "Post",
-                columns: new[] { "id", "contenido", "fecha", "idUser" },
-                values: new object[] { 3, "Hola", new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8047), 3 });
+                table: "Usuario_Amigo",
+                columns: new[] { "idAmigo", "idUser" },
+                values: new object[,]
+                {
+                    { 2, 3 },
+                    { 3, 2 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Comentario",
                 columns: new[] { "id", "contenido", "fecha", "idPost", "idUser" },
-                values: new object[] { 1, "Argentina", new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8055), 1, 1 });
+                values: new object[,]
+                {
+                    { 1, "Hola todo bien y vos?", new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4692), 1, 2 },
+                    { 2, "Hola como estas?", new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4702), 3, 2 },
+                    { 3, "Hola!!!", new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4708), 3, 3 },
+                    { 4, "Buenas!", new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4714), 5, 1 },
+                    { 5, "Argentina", new DateTime(2022, 8, 3, 20, 28, 57, 480, DateTimeKind.Local).AddTicks(4720), 4, 3 }
+                });
 
             migrationBuilder.InsertData(
-                table: "Comentario",
-                columns: new[] { "id", "contenido", "fecha", "idPost", "idUser" },
-                values: new object[] { 2, "Argentina", new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8064), 2, 2 });
-
-            migrationBuilder.InsertData(
-                table: "Comentario",
-                columns: new[] { "id", "contenido", "fecha", "idPost", "idUser" },
-                values: new object[] { 3, "Argentina", new DateTime(2022, 8, 1, 20, 0, 6, 527, DateTimeKind.Local).AddTicks(8070), 3, 3 });
+                table: "Posts_Tags",
+                columns: new[] { "idPost", "idTag" },
+                values: new object[,]
+                {
+                    { 1, 3 },
+                    { 1, 5 },
+                    { 1, 8 },
+                    { 1, 9 },
+                    { 2, 3 },
+                    { 2, 5 },
+                    { 2, 9 },
+                    { 2, 10 },
+                    { 3, 2 },
+                    { 3, 5 },
+                    { 3, 6 },
+                    { 3, 8 },
+                    { 4, 1 },
+                    { 4, 2 },
+                    { 4, 5 },
+                    { 4, 8 },
+                    { 5, 2 },
+                    { 5, 5 },
+                    { 5, 6 },
+                    { 5, 10 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comentario_idPost",

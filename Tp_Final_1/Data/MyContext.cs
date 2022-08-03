@@ -100,23 +100,105 @@ namespace Tp_Final_1.Data
 
             //Datos de prueba
             modelBuilder.Entity<Usuario>().HasData(
-                new {id = 1, dni = 111, nombre = "Mariano", apellido = "Rojas", email = "mariano@mail.com", password = "111", intentosFallidos = 0, bloqueado = false , isAdm = true});
+                new {id = 1, dni = 111, nombre = "Mariano", apellido = "Rojas", email = "Mariano@mail.com", password = "111", intentosFallidos = 0, bloqueado = false , isAdm = true});
             modelBuilder.Entity<Usuario>().HasData(
-                new { id = 2, dni = 222, nombre = "Alan", apellido = "Carballal", email = "alan@mail.com", password = "222", intentosFallidos = 0, bloqueado = false, isAdm = false });
+                new { id = 2, dni = 222, nombre = "Alan", apellido = "Carballal", email = "Alan@mail.com", password = "222", intentosFallidos = 0, bloqueado = false, isAdm = false });
             modelBuilder.Entity<Usuario>().HasData(
-                new { id = 3, dni = 222, nombre = "Manuel", apellido = "Fraga", email = "Manuel@mail.com", password = "333", intentosFallidos = 0, bloqueado = false, isAdm = false });
+                new { id = 3, dni = 333, nombre = "Manuel", apellido = "Fraga", email = "Manuel@mail.com", password = "333", intentosFallidos = 0, bloqueado = false, isAdm = false });
+            modelBuilder.Entity<Usuario>().HasData(
+                new { id = 4, dni = 444, nombre = "Paula", apellido = "Lezcano", email = "Paula@mail.com", password = "444", intentosFallidos = 0, bloqueado = true, isAdm = false });
+            modelBuilder.Entity<Usuario>().HasData(
+                new { id = 5, dni = 555, nombre = "Mariano", apellido = "Ghislanzoni", email = "Marianog@mail.com", password = "555", intentosFallidos = 2, bloqueado = false, isAdm = false });
+            
             modelBuilder.Entity<Post>().HasData(
                 new { id = 1, idUser = 1, contenido = "Como estan?", fecha = DateTime.Now });
             modelBuilder.Entity<Post>().HasData(
                 new { id = 2, idUser = 2, contenido = "Todo bien por suerte", fecha = DateTime.Now });
             modelBuilder.Entity<Post>().HasData(
                 new { id = 3, idUser = 3, contenido = "Hola", fecha = DateTime.Now });
+            modelBuilder.Entity<Post>().HasData(
+                new { id = 4, idUser = 4, contenido = "De donde son?", fecha = DateTime.Now });
+            modelBuilder.Entity<Post>().HasData(
+                new { id = 5, idUser = 5, contenido = "Hola", fecha = DateTime.Now });
+
+
             modelBuilder.Entity<Comentario>().HasData(
-                new { id = 1, idPost = 1, idUser= 1,  contenido = "Argentina", fecha = DateTime.Now });
+                new { id = 1, idPost = 1, idUser= 2,  contenido = "Hola todo bien y vos?", fecha = DateTime.Now });
             modelBuilder.Entity<Comentario>().HasData(
-                new { id = 2, idPost = 2, idUser = 2, contenido = "Argentina", fecha = DateTime.Now });
+                new { id = 2, idPost = 3, idUser = 2, contenido = "Hola como estas?", fecha = DateTime.Now });
             modelBuilder.Entity<Comentario>().HasData(
-                new { id = 3, idPost = 3, idUser = 3, contenido = "Argentina", fecha = DateTime.Now });
+                new { id = 3, idPost = 3, idUser = 3, contenido = "Hola!!!", fecha = DateTime.Now });
+            modelBuilder.Entity<Comentario>().HasData(
+                new { id = 4, idPost = 5, idUser = 1, contenido = "Buenas!", fecha = DateTime.Now });
+            modelBuilder.Entity<Comentario>().HasData(
+                new { id = 5, idPost = 4, idUser = 3, contenido = "Argentina", fecha = DateTime.Now });
+
+            modelBuilder.Entity<Tag>().HasData(
+                new { id = 1, palabra = "Bienvenida" });
+            modelBuilder.Entity<Tag>().HasData(
+                new { id = 2, palabra = "love" }); 
+            modelBuilder.Entity<Tag>().HasData(
+                new { id = 3, palabra = "instagood" }); 
+            modelBuilder.Entity<Tag>().HasData(
+                new { id = 4, palabra = "fashion" }); 
+            modelBuilder.Entity<Tag>().HasData(
+                new { id = 5, palabra = "photooftheday" }); 
+            modelBuilder.Entity<Tag>().HasData(
+                new { id = 6, palabra = "art" }); 
+            modelBuilder.Entity<Tag>().HasData(
+                new { id = 7, palabra = "photography" }); 
+            modelBuilder.Entity<Tag>().HasData(
+                new { id = 8, palabra = "instagram" }); 
+            modelBuilder.Entity<Tag>().HasData(
+                new { id = 9, palabra = "beautiful" }); 
+            modelBuilder.Entity<Tag>().HasData(
+                new { id = 10, palabra = "nature" });
+
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 1, idPost = 1, idTag = 5 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 2, idPost = 1, idTag = 8 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 3, idPost = 1, idTag = 9 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 4, idPost = 1, idTag = 3 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 5, idPost = 2, idTag = 10 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 6, idPost = 2, idTag = 5 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 7, idPost = 2, idTag = 9 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 8, idPost = 2, idTag = 3 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 9, idPost = 3, idTag = 2 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 10, idPost = 3, idTag = 5 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 11, idPost = 3, idTag = 6 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 12, idPost = 3, idTag = 8 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 13, idPost = 4, idTag = 8 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 14, idPost = 4, idTag = 5 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 15, idPost = 4, idTag = 2 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 16, idPost = 4, idTag = 1 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 17, idPost = 5, idTag = 10 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 18, idPost = 5, idTag = 2 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 19, idPost = 5, idTag = 5 }); 
+            modelBuilder.Entity<PostsTags>().HasData(
+                new { id = 20, idPost = 5, idTag = 6 });
+
+            modelBuilder.Entity<UsuarioAmigo>().HasData(
+                new { id = 1, idUser = 2, idAmigo = 3 });
+            modelBuilder.Entity<UsuarioAmigo>().HasData(
+                new { id = 2, idUser = 3, idAmigo = 2 });
 
             modelBuilder.Ignore<RedSocial>();
         }
