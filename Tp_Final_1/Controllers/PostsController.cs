@@ -17,6 +17,9 @@ namespace Tp_Final_1.Controllers
         public PostsController(MyContext context)
         {
             _context = context;
+            _context.post.Include(p => p.user);
+            _context.post.Include(p => p.Tag).Load();
+            _context.tags.Include(t => t.Post).Load();
         }
 
         // GET: Posts
@@ -156,41 +159,91 @@ namespace Tp_Final_1.Controllers
 
 
         //GET: Posts/Busqueda/5
-        //public ActionResult Busqueda(string contenido, string tags, DateTime fechai, DateTime fechaf, string nombre, string apellido)
-        //{
-        //    var consultaPost = _context.post;
-        //    var consultaTags = _context.tags;
-        //    var consultaPostTags = _context.PostsTags;
-        //    var consultaUser = _context.usuarios.ToList();
+        public ActionResult Busqueda(string contenido, string tags, DateTime fechai, DateTime fechaf, string nombre, string apellido)
+        {
+            var consultaPost = _context.post;
+            var consultaTags = _context.tags;
+            var consultaPostTags = _context.PostsTags;
+            var consultaUser = _context.usuarios.ToList();
+            string fDesde = fechai.Date.ToString("dd/MM/yyyy");
+            string hDesde = fechaf.Date.ToString("dd/MM/yyyy");
+            DbSet<Post> filter;
 
+            Tag tag = (Tag)consultaTags.Where(x => x.palabra == tags).First();
 
+            //List<Tag> tagDbSet = consultaTags.Where(x => x.palabra == tags).ToList();
+            //var listIdPost = new List<int>();
 
-        //    List<Tag> tagDbSet = consultaTags.Where(x => x.palabra == tags).ToList();
-        //    var listIdPost = new List<int>();
+            //if (tagDbSet != null && tagDbSet.Count > 0)
+            //{
+            //    Tag tag = tagDbSet.First();
 
-        //    if (tagDbSet != null && tagDbSet.Count > 0)
-        //    {
-        //        Tag tag = tagDbSet.First();
+            //    if (consultaPostTags != null)
+            //    {
+            //        var listTagsDbSet = consultaPostTags.Where(t => t.idTag == tag.id);
+            //        foreach (var dbset in listTagsDbSet)
+            //            listIdPost.Add(dbset.idPost);
+            //    }
 
-        //        if (consultaPostTags != null)
-        //        {
-        //            var listTagsDbSet = consultaPostTags.Where(t => t.idTag == tag.id);
-        //            foreach (var dbset in listTagsDbSet)
-        //                listIdPost.Add(dbset.idPost);
-        //        }
-                
-        //    }
+            //}
 
+            if (tags != null)
+            {
+                if (contenido != null)
+                {
+                    if (fDesde != "1/1/0001 00:00:00" || hDesde != "1/1/0001 00:00:00")
+                    {
+                        if (nombre != null)
+                        {
+                            if (apellido != null)
+                            {
+                                filter = (DbSet<Post>)consultaPost
+                                    .Where(x => x.contenido == contenido)
+                                    .Where(x => x.fecha >= fechai)
+                                    .Where(x => x.fecha <= fechaf)
+                                    .Where(x => x.user.nombre == nombre).Where(x => x.user.apellido == apellido)
+                                    .Where(x => x.Tag.Contains(tag));
+                            }
+                            else
+                            {
+                                filter = (DbSet<Post>)consultaPost
+                                    .Where(x => x.contenido == contenido)
+                                    .Where(x => x.fecha >= fechai)
+                                    .Where(x => x.fecha <= fechaf)
+                                    .Where(x => x.user.nombre == nombre)
+                                    .Where(x => x.Tag.Contains(tag));
+                            }
+                        }
+                        else if (apellido != null)
+                        {
+                            filter = (DbSet<Post>)consultaPost
+                              .Where(x => x.contenido == contenido)
+                              .Where(x => x.fecha >= fechai)
+                              .Where(x => x.fecha <= fechaf)
+                              .Where(x => x.user.nombre == nombre).Where(x => x.user.apellido == apellido)
+                              .Where(x => x.Tag.Contains(tag));
+                        }
+                    }
+                }
+            }
 
-        //    var filter = consultaPost.Where(
-        //        x => x.contenido == contenido);
-        //        //.Where(x => x.fecha >= fechai)
-        //        //.Where(x => x.fecha <= fechaf)
-        //        //.Where(x => x.idUser == consultaUser.Where(y => y.nombre == nombre).Where(y => y.apellido == apellido).First().id)
-        //        //.Where(x => listIdPost.Contains(x.id));
-                
-        //    return View(filter);
-        //}
+            
+            if (contenido == null && tags == null && nombre == null && apellido == null)
+            {
+                filter = consultaPost;
+            }
+            else
+            {
+                filter = (DbSet<Post>)consultaPost
+                    .Where(x => x.contenido == contenido)
+                    .Where(x => x.fecha >= fechai)
+                    .Where(x => x.fecha <= fechaf)
+                    .Where(x => x.user.nombre == nombre).Where(x => x.user.apellido == apellido)
+                    .Where(x => x.Tag.Contains(tag));
+            }           
+
+            return View(filter);
+        }
 
 
         private bool PostExists(int id)
